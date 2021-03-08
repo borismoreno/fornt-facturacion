@@ -5,6 +5,7 @@ export const startLogin = (email, password) => {
     return async(dispatch) => {
         const respuesta = await fetchSinToken('auth/login', { email, password }, 'POST');
         const body = await respuesta.json();
+        console.log({body});
         if ( body.ok ) {
             localStorage.setItem('token', body.token);
             const { nombre, uid, nombreComercial, empresaId } = body;
