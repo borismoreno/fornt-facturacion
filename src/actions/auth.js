@@ -28,6 +28,7 @@ export const startLogin = (email, password) => {
 export const startChecking = () => {
     return async(dispatch) => {
         const respuesta = await fetchConToken('auth/renew');
+        console.log('respuesta', respuesta);
         const body = await respuesta.json();
         if ( body.ok ) {
             localStorage.setItem('token', body.token);
