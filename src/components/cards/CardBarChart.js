@@ -126,7 +126,7 @@ export const CardBarChart = () => {
                 <div className="flex flex-wrap items-center">
                     <div className="relative w-full max-w-full flex-grow flex-1">
                     <h6 className="uppercase text-gray-500 mb-1 text-xs font-semibold">
-                        Total
+                        Número
                     </h6>
                     <h2 className="text-gray-800 text-xl font-semibold">
                         Facturas Emitidas

@@ -10,8 +10,10 @@ export const CerrarSesion = () => {
     return (
         <button
             onClick={handleLogout}
+            className="text-black md:text-white flex items-center"
         >
-            Cerrar Sesión
+            <i className="fas fa-sign-out-alt mr-2"></i>
+            <p className="uppercase">Salir</p>
         </button>
     )
 }

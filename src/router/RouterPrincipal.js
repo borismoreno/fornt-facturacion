@@ -4,7 +4,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { DashboardScreen } from '../components/dashboard/DashboardScreen';
 import { FacturaScreen } from '../components/comprobantes/FacturaScreen';
 import { Navbar } from '../components/ui/Navbar';
-// import { HeaderStats } from '../components/ui/HeaderStats';
 
 export const RouterPrincipal = () => {
     return (
@@ -12,7 +11,7 @@ export const RouterPrincipal = () => {
             <Sidebar />
             <div className="relative md:ml-64 bg-gray-200">
                 <Navbar />
-                <div className="px-4 md:px-10 mx-auto w-full">
+                <div className="px-4 md:px-10 mx-auto w-full mt-4 pb-2">
                     <Switch>
                         <Route exact path='/dashboard' component={ DashboardScreen } />
                         <Route exact path='/factura' component={ FacturaScreen } />

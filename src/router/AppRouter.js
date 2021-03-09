@@ -9,6 +9,7 @@ import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 import { startChecking } from '../actions/auth';
 import { RouterPrincipal } from './RouterPrincipal';
+import { MostrarAlerta } from '../components/ui/MostrarAlerta';
 
 const AppRouter = () => {
     const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const AppRouter = () => {
     }
     return ( 
         <Router>
+            <MostrarAlerta />
             <div>
                 <Switch>
                     <PublicRoute 

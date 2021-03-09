@@ -22,7 +22,7 @@ const Sidebar = () => {
                     className="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
                     to="/"
                 >
-                    Factura-Agil
+                    Factura-ágil
                 </Link>
                 {/* User */}
                 <ul className="md:hidden items-center flex flex-wrap list-none">
@@ -49,7 +49,7 @@ const Sidebar = () => {
                             className="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
                             to="/"
                         >
-                            Factura-Agil
+                            Factura-ágil
                         </Link>
                         </div>
                         <div className="w-6/12 flex justify-end">
@@ -78,7 +78,7 @@ const Sidebar = () => {
                     <hr className="my-4 md:min-w-full" />
                     {/* Heading */}
                     <h6 className="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                    Administracion
+                    Administración
                     </h6>
                     {/* Navigation */}
 

@@ -1,11 +1,11 @@
 import { fetchConToken, fetchSinToken } from '../helpers/fetch';
+import { startMostrarError } from '../actions/alerta';
 import { types } from '../types/types';
 
 export const startLogin = (email, password) => {
     return async(dispatch) => {
         const respuesta = await fetchSinToken('auth/login', { email, password }, 'POST');
         const body = await respuesta.json();
-        console.log({body});
         if ( body.ok ) {
             localStorage.setItem('token', body.token);
             const { nombre, uid, nombreComercial, empresaId } = body;
@@ -17,9 +17,9 @@ export const startLogin = (email, password) => {
             }));
         } else {
             if ( body.msg ) {
-                console.log(body.msg);
+                dispatch(startMostrarError(body.msg));
             } else {
-                console.log(body.errores[0].msg);
+                dispatch(startMostrarError(body.errores[0].msg));
             }
             return;
         }
@@ -29,7 +29,6 @@ export const startLogin = (email, password) => {
 export const startChecking = () => {
     return async(dispatch) => {
         const respuesta = await fetchConToken('auth/renew');
-        console.log('respuesta', respuesta);
         const body = await respuesta.json();
         if ( body.ok ) {
             localStorage.setItem('token', body.token);

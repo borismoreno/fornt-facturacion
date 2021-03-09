@@ -10,4 +10,7 @@ export const types = {
     dashTotalComprobantes : '[dash] Total comprobantes emitidos',
     dashLimpiar: '[dash] Limpiar datos dashboard',
     dashTopClientes: '[dash] Top Clientes',
+
+    alertaMostrar: '[alerta] Mostrar alerta',
+    alertaOcultar: '[alerta] Ocultar alerta',
 }
