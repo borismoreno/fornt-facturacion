@@ -13,4 +13,18 @@ export const types = {
 
     alertaMostrar: '[alerta] Mostrar alerta',
     alertaOcultar: '[alerta] Ocultar alerta',
+
+    clientesObtener: '[clientes] Obtener clientes',
+    clientesBuscar: '[clientes] Buscar cliente',
+    clientesSeleccionar: '[clientes] Seleccionar cliente',
+    clientesLimpiarSeleccion: '[clientes] Limpiar selección',
+    clientesGuardarCliente: '[clientes] Guardar cliente',
+
+    configuracionTiposIdentificacion: '[configuracion] Buscar tipos de identificacion',
+    configuracionDatosEmpresa: '[configuracion] Obtener datos empresa',
+    configuracionTiposProducto: '[configuracion] Obtener tipos de producto',
+    configuracionTarifasIva: '[configuracion] Obtener tarifas de IVA',
+
+    facturaAgregarDetalle: '[factura] Agregar detalle',
+    facturaLimpiarFactura: '[factura] Limpiar datos factura'
 }

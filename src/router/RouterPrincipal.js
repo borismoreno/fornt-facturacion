@@ -9,7 +9,7 @@ export const RouterPrincipal = () => {
     return (
         <>
             <Sidebar />
-            <div className="relative md:ml-64 bg-gray-200">
+            <div className="relative md:ml-64 bg-white">
                 <Navbar />
                 <div className="px-4 md:px-10 mx-auto w-full mt-4 pb-2">
                     <Switch>
