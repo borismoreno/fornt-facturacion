@@ -13,6 +13,8 @@ export const types = {
 
     alertaMostrar: '[alerta] Mostrar alerta',
     alertaOcultar: '[alerta] Ocultar alerta',
+    cargandoMostrar: '[cargando] Mostrar cargando',
+    cargandoOcultar: '[cargando] Ocultar cargando',
 
     clientesObtener: '[clientes] Obtener clientes',
     clientesBuscar: '[clientes] Buscar cliente',
@@ -24,7 +26,14 @@ export const types = {
     configuracionDatosEmpresa: '[configuracion] Obtener datos empresa',
     configuracionTiposProducto: '[configuracion] Obtener tipos de producto',
     configuracionTarifasIva: '[configuracion] Obtener tarifas de IVA',
+    configuracionFormasPago: '[configuracion] Obtener Formas de Pago',
 
     facturaAgregarDetalle: '[factura] Agregar detalle',
-    facturaLimpiarFactura: '[factura] Limpiar datos factura'
+    facturaLimpiarFactura: '[factura] Limpiar datos factura',
+    facturaAgregarAdicional: '[factura] Agregar Dato Adicional',
+    facturaAgregarFormaPago: '[factura] Agregar Forma Pago',
+    facturaValoresFactura: '[factura] Agregar Valores Factura',
+    facturaActualizarDetalles: '[factura] Actualizar detalles factura',
+    facturaActualizarAdicionales: '[factura] Actualizar Datos Adicionales',
+    facturaActualizarFormasPago: '[factura] Actualizar Formas Pago'
 }

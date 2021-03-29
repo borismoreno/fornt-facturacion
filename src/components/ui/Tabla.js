@@ -1,37 +1,15 @@
 import React from 'react';
 
-const initialData = [
-    // {
-    //     nombreCliente: 'Marco Moreno',
-    //     totalVentas: '6897.29',
-    //     porcentaje: '75.72'
-    // },
-    // {
-    //     nombreCliente: 'Martina Salazar',
-    //     totalVentas: '687.29',
-    //     porcentaje: '15.72'
-    // },
-    // {
-    //     nombreCliente: 'Mateo Moreno',
-    //     totalVentas: '897.29',
-    //     porcentaje: '25.72'
-    // },
-]
+const initialData = []
 
-const headersInitial = [
-    // 'Cliente',
-    // 'Total Ventas',
-    // 'Porcentaje',
-    // 'Total'
-]
+const headersInitial = []
 
-export const Tabla = ({titulo, headers = headersInitial, data = initialData}) => {
+export const Tabla = ({titulo, headers = headersInitial, data = initialData, handleEliminar}) => {
     const obtenerHeaders = () => {
         if ( headers && headers.length > 0 ) {
-            // let header = Object.keys(data[0]);
             return headers.map((key, index) => {
                 return <th 
-                            className="px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                            className="px-6 bg-blue-300 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
                             key={index}
                         >{key}</th>
             })
@@ -54,6 +32,17 @@ export const Tabla = ({titulo, headers = headersInitial, data = initialData}) =>
                                 )
                             })
                         }
+                        {
+                          handleEliminar &&  <td>
+                                <button
+                                    className="focus:outline-none"
+                                    onClick={() => handleEliminar(index)}
+                                >
+                                    <i className="far fa-trash-alt cursor-pointer hover:text-red-500 focus:outline-none"></i>
+                                </button>
+                            </td>
+                            
+                        }
                     </tr>
                 )
             })
@@ -61,7 +50,7 @@ export const Tabla = ({titulo, headers = headersInitial, data = initialData}) =>
     }
     return (
         <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-        <div className="rounded-t mb-0 px-4 py-3 border-0">
+        { titulo && <div className="rounded-t mb-0 px-4 py-3 border-0">
           <div className="flex flex-wrap items-center">
             <div className="relative w-full px-4 max-w-full flex-grow flex-1">
               <h3 className="font-semibold text-base text-gray-800">
@@ -71,7 +60,7 @@ export const Tabla = ({titulo, headers = headersInitial, data = initialData}) =>
             <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
             </div>
           </div>
-        </div>
+        </div>}
         <div className="block w-full overflow-x-auto">
           {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">

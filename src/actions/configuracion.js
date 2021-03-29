@@ -60,3 +60,18 @@ const obtenerTarifasIva = (tarifasIva) => ({
     type: types.configuracionTarifasIva,
     payload: tarifasIva
 })
+
+export const startObtenerFormasPago = () => {
+    return async(dispatch) => {
+        const respuesta = await fetchConToken('configuracion/tiposFormaPago');
+        const body = await respuesta.json();
+        if ( body.ok ) {
+            dispatch(obtenerFormasPago(body.tiposFormaPago));
+        }
+    }
+}
+
+const obtenerFormasPago = (tiposFormaPago) => ({
+    type: types.configuracionFormasPago,
+    payload: tiposFormaPago
+})

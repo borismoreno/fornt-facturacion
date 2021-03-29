@@ -2,7 +2,8 @@ import { types } from '../types/types';
 
 const initialState = {
     mostrarError: false,
-    mensajeError: ''
+    mensajeError: '',
+    mostrarCargando: false,
 }
 
 export const alertaReducer = (state = initialState, action) => {
@@ -18,6 +19,16 @@ export const alertaReducer = (state = initialState, action) => {
                 ...state,
                 mostrarError: false,
                 mensajeError: ''
+            }
+        case types.cargandoMostrar:
+            return {
+                ...state,
+                mostrarCargando: true,
+            }
+        case types.cargandoOcultar:
+            return {
+                ...state,
+                mostrarCargando: false
             }
         default:
             return state;

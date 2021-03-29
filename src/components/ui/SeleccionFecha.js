@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
 import es from 'date-fns/locale/es';
 import "react-datepicker/dist/react-datepicker.css";
 
-export const SeleccionFecha = () => {
-    const [startDate, setStartDate] = useState(new Date());
+export const SeleccionFecha = ({startDate, setStartDate}) => {
     var today = new Date();
     var minimo = new Date();
     minimo.setDate(today.getDate() - 30);

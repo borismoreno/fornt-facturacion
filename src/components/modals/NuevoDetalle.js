@@ -12,7 +12,7 @@ export const NuevoDetalle = ({setShowModal}) => {
         initialValues: {
             descripcion: '',
             cantidad: '',
-            precio: '',
+            valorUnitario: '',
             tipoProducto: '',
             tarifaIva: '',
             descuento: '',
@@ -24,9 +24,9 @@ export const NuevoDetalle = ({setShowModal}) => {
             cantidad: Yup.number()
                         .required('La cantidad es obligatoria.')
                         .min(1, 'La cantidad es obligatoria'),
-            precio: Yup.number()
-                        .required('El precio es obligatorio.')
-                        .min(1, 'El precio es obligatorio'),
+            valorUnitario: Yup.number()
+                                .required('El precio es obligatorio.')
+                                .min(1, 'El precio es obligatorio'),
             tipoProducto: Yup.string()
                             .required('El tipo de producto es obligatorio.'),
             tarifaIva: Yup.string()
@@ -39,13 +39,23 @@ export const NuevoDetalle = ({setShowModal}) => {
             let valorDescuento = 0;
             setShowModal(false);
             if ( datos.descuento ) {
-                valorDescuento = calcularDescuento(datos.precio, datos.descuento);
+                valorDescuento = calcularDescuento(datos.valorUnitario, datos.descuento);
             }
-            const subtotal = calcularSubtotal(datos.cantidad, datos.precio - valorDescuento);
+            const subtotal = calcularSubtotal(datos.cantidad, datos.valorUnitario - valorDescuento);
+            const tarifaImp = tarifasIva.find(tarifa => tarifa.codigo === datos.tarifaIva).porcentaje.split('%');
+            let tarifaIvaCalculo = '0';
+            let valorImpuesto = 0.00;
+            if ( tarifaImp.length > 1 ) {
+              tarifaIvaCalculo = tarifaImp[0];
+            }
+            if ( Number(tarifaIvaCalculo) > 0 ) {
+              valorImpuesto = (subtotal * Number(tarifaIvaCalculo)) / 100;
+            }
             dispatch(startAgregarDetalle({
                 ...datos,
                 valorDescuento,
-                subtotal
+                subtotal,
+                valorImpuesto
             }));
         }
     })
@@ -59,14 +69,14 @@ export const NuevoDetalle = ({setShowModal}) => {
     }
 
     const calcularSubtotal = (cantidad, precioUnitario) => {
-        // let precio = precioUnitario;
-        // if ( descuento ) {
-        //     precio = precioUnitario - ((precioUnitario * descuento) / 100);
-        // }
         return cantidad * precioUnitario;
     }
     return (
         <>
+        <div 
+            className="justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+            // onClick={() => setShowModal(false)}
+        >
             <div className="relative w-10/12 md:w-8/12 lg:w-5/12 my-6 pb-2 mx-auto max-w-3xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
@@ -99,6 +109,7 @@ export const NuevoDetalle = ({setShowModal}) => {
                         placeholder="Descripción Producto"
                         name="descripcion"
                         autoComplete="off"
+                        autoFocus
                         value={formik.values.descripcion}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -117,25 +128,25 @@ export const NuevoDetalle = ({setShowModal}) => {
                         className="md:pl-6 mb-6"
                     >
                         <label
-                        htmlFor="precio"
+                        htmlFor="valorUnitario"
                         className="text-xs font-bold"
-                        >Precio</label>
+                        >Valor Unitario</label>
                         <input
-                            id="precio"
+                            id="valorUnitario"
                             className="w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg mt-2 text-sm"
                             placeholder="$20"
-                            name="precio"
+                            name="valorUnitario"
                             type="number"
                             min="0"
-                            value={formik.values.precio}
+                            value={formik.values.valorUnitario}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                         />
                         { 
-                            formik.touched.precio && formik.errors.precio ?
+                            formik.touched.valorUnitario && formik.errors.valorUnitario ?
                             (
                                 <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-                                    { formik.errors.precio }
+                                    { formik.errors.valorUnitario }
                                 </span>
                             ) : null
                         }
@@ -273,6 +284,8 @@ export const NuevoDetalle = ({setShowModal}) => {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
     )
 }

@@ -15,9 +15,25 @@ export const startOcultarError = () => {
     }
 }
 
+export const startMostrarCargando = () => {
+    return (dispatch) => {
+        dispatch(mostrarCargando());
+    }
+}
+
+export const startOcultarCargando = () => {
+    return (dispatch) => {
+        dispatch(ocultarCargando());
+    }
+}
+
 const mostrarError = mensaje => ({ 
     type: types.alertaMostrar ,
     payload: mensaje
 });
 
 const ocultarError = () => ({ type: types.alertaOcultar })
+
+const mostrarCargando = () => ({ type: types.cargandoMostrar })
+
+const ocultarCargando = () => ({ type: types.cargandoOcultar })
