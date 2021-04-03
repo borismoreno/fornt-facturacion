@@ -65,7 +65,7 @@ export const ValoresFactura = () => {
             totalIva: iva,
             valorTotal: total,
         }));
-        
+        // eslint-disable-next-line
     }, [detallesFactura, dispatch]);
     return (
         <div className="w-full">

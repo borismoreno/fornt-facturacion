@@ -28,7 +28,6 @@ export const startLogin = (email, password) => {
 
 export const startChecking = () => {
     return async(dispatch) => {
-        console.log('cheking...');
         const respuesta = await fetchConToken('auth/renew');
         const body = await respuesta.json();
         if ( body.ok ) {

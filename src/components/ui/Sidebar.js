@@ -107,7 +107,13 @@ const Sidebar = () => {
                         </NavLink>
                     </li>
 
-                    <li className="items-center">
+                    <hr className="my-4 md:min-w-full" />
+                    {/* Heading */}
+                    <h6 className="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                    Comprobantes
+                    </h6>
+
+                    {/* <li className="items-center">
                         <NavLink
                             className="text-xs uppercase py-3 font-bold block text-gray-800 hover:text-gray-600"
                             activeClassName="text-blue-500 hover:text-blue-600"
@@ -115,13 +121,31 @@ const Sidebar = () => {
                         >
                         <i
                             className={
-                            "fas fa-tools mr-2 text-sm " +
+                            "fas fa-file-alt mr-2 text-sm " +
                             (window.location.href.indexOf("/factura") !== -1
                                 ? "opacity-75"
                                 : "text-gray-400")
                             }
                         ></i>{" "}
                         Factura
+                        </NavLink>
+                    </li> */}
+
+                    <li className="items-center">
+                        <NavLink
+                            className="text-xs uppercase py-3 font-bold block text-gray-800 hover:text-gray-600"
+                            activeClassName="text-blue-500 hover:text-blue-600"
+                            to="/emitidas"
+                        >
+                        <i
+                            className={
+                            "far fa-list-alt mr-2 text-sm " +
+                            (window.location.href.indexOf("/emitidas") !== -1
+                                ? "opacity-75"
+                                : "text-gray-400")
+                            }
+                        ></i>{" "}
+                        Facturas
                         </NavLink>
                     </li>
 

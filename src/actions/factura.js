@@ -96,7 +96,7 @@ export const startEmitirFactura = (envioFactura) => {
             const { empresa } = envioFactura;
             const pad = '000000000';
             const nombreArchivo = `${empresa.establecimiento}-${empresa.puntoEmision}-${pad.substring(0, pad.length - empresa.secuencialFactura.length) + empresa.secuencialFactura}`;
-            const respuesta = await fetchConToken('comprobante', envioFactura, 'POST');
+            const respuesta = await fetchConToken('comprobante/v2', envioFactura, 'POST');
             const body = await respuesta.blob();
             saveAs(body, nombreArchivo);
             dispatch(startOcultarCargando());

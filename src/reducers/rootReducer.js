@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { alertaReducer } from './alertaReducer';
 import { authReducer } from './authReducer';
 import { clientesReducer } from './clientesReducer';
+import { comprobanteReducer } from './comprobanteReducer';
 import { configuracionReducer } from './configuracionReducer';
 import { dashboardReducer } from './dashboardReducer';
 import { facturaReducer } from './facturaReducer';
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
     clientes: clientesReducer,
     configuracion: configuracionReducer,
     factura: facturaReducer,
+    comprobante: comprobanteReducer,
 })

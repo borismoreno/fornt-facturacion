@@ -35,5 +35,10 @@ export const types = {
     facturaValoresFactura: '[factura] Agregar Valores Factura',
     facturaActualizarDetalles: '[factura] Actualizar detalles factura',
     facturaActualizarAdicionales: '[factura] Actualizar Datos Adicionales',
-    facturaActualizarFormasPago: '[factura] Actualizar Formas Pago'
+    facturaActualizarFormasPago: '[factura] Actualizar Formas Pago',
+
+    comprobanteObtenerEmitidos: '[comprobante] Obtener comprobantes emitidos',
+    comprobanteIniciarObtenerPdf: '[comprobante] Iniciar Obtener PDF',
+    comprobanteTerminarObtenerPdf: '[comprobante] Terminar Obtener PDF',
+    comprobanteObtenerFechasBusqueda: '[comprobante] Obtener fechas de búsqueda',
 }

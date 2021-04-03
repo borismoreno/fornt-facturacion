@@ -232,11 +232,11 @@ export const FacturaScreen = () => {
 
     useEffect(() => {
         setValorPendiente((valorTotal - subtotalFormaPago).toFixed(2));
-    }, [subtotalFormaPago]);
+    }, [subtotalFormaPago, valorTotal]);
 
-    useEffect(() => {
-        setValorPendiente((valorTotal - subtotalFormaPago).toFixed(2));
-    }, [valorTotal]);
+    // useEffect(() => {
+    //     setValorPendiente((valorTotal - subtotalFormaPago).toFixed(2));
+    // }, [valorTotal]);
 
     useEffect(() => {
         setNumeroIdentificacion('');

@@ -1,10 +1,11 @@
 import React from 'react';
+import { MenuAcciones } from './MenuAcciones';
 
 const initialData = []
 
 const headersInitial = []
 
-export const Tabla = ({titulo, headers = headersInitial, data = initialData, handleEliminar}) => {
+export const Tabla = ({titulo, headers = headersInitial, data = initialData, handleEliminar, acciones = false}) => {
     const obtenerHeaders = () => {
         if ( headers && headers.length > 0 ) {
             return headers.map((key, index) => {
@@ -21,11 +22,14 @@ export const Tabla = ({titulo, headers = headersInitial, data = initialData, han
             return data.map((item, index) => {
                 let claves = Object.keys(item);
                 return (
-                    <tr key={index}>
+                    <tr 
+                        key={index}
+                        className="border-b-2 hover:bg-blue-50"
+                    >
                         {
                             claves.map((clave, i) => {
                                 return (
-                                    <td 
+                                    clave !== "claveAcceso" && <td 
                                         key={i}
                                         className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                                     >{item[clave]}</td>
@@ -42,6 +46,11 @@ export const Tabla = ({titulo, headers = headersInitial, data = initialData, han
                                 </button>
                             </td>
                             
+                        }
+                        {
+                            acciones && <MenuAcciones
+                                claveAcceso={item["claveAcceso"]}
+                            />
                         }
                     </tr>
                 )

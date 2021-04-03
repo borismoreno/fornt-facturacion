@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { DashboardScreen } from '../components/dashboard/DashboardScreen';
 import { FacturaScreen } from '../components/comprobantes/FacturaScreen';
 import { Navbar } from '../components/ui/Navbar';
+import { FacturasEmitidasScreen } from '../components/emitidas/FacturasEmitidasScreen';
 
 export const RouterPrincipal = () => {
     return (
@@ -15,6 +16,7 @@ export const RouterPrincipal = () => {
                     <Switch>
                         <Route exact path='/dashboard' component={ DashboardScreen } />
                         <Route exact path='/factura' component={ FacturaScreen } />
+                        <Route exact path='/emitidas' component={ FacturasEmitidasScreen } />
                         <Redirect to='/dashboard' />
                     </Switch>
                 </div>
