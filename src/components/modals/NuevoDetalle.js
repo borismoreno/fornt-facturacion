@@ -11,11 +11,11 @@ export const NuevoDetalle = ({setShowModal}) => {
     const formik = useFormik({
         initialValues: {
             descripcion: '',
-            cantidad: '',
-            valorUnitario: '',
+            cantidad: 0,
+            valorUnitario: 0,
             tipoProducto: '',
             tarifaIva: '',
-            descuento: '',
+            descuento: 0,
         },
         validationSchema: Yup.object({
             descripcion: Yup.string()
@@ -38,6 +38,7 @@ export const NuevoDetalle = ({setShowModal}) => {
             // dispatch(startGuardarCliente(datos));
             let valorDescuento = 0;
             setShowModal(false);
+            datos.valorUnitario = Number(datos.valorUnitario.toFixed(2));
             if ( datos.descuento ) {
                 valorDescuento = calcularDescuento(datos.valorUnitario, datos.descuento);
             }
@@ -49,7 +50,7 @@ export const NuevoDetalle = ({setShowModal}) => {
               tarifaIvaCalculo = tarifaImp[0];
             }
             if ( Number(tarifaIvaCalculo) > 0 ) {
-              valorImpuesto = (subtotal * Number(tarifaIvaCalculo)) / 100;
+              valorImpuesto = Number(((subtotal * Number(tarifaIvaCalculo)) / 100).toFixed(2));
             }
             dispatch(startAgregarDetalle({
                 ...datos,

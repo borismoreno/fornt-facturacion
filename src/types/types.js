@@ -36,6 +36,7 @@ export const types = {
     facturaActualizarDetalles: '[factura] Actualizar detalles factura',
     facturaActualizarAdicionales: '[factura] Actualizar Datos Adicionales',
     facturaActualizarFormasPago: '[factura] Actualizar Formas Pago',
+    facturaObtenerClaveAcceso: '[factura] Obtener clave acceso',
 
     comprobanteObtenerEmitidos: '[comprobante] Obtener comprobantes emitidos',
     comprobanteIniciarObtenerPdf: '[comprobante] Iniciar Obtener PDF',

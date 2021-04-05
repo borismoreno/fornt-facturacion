@@ -4,6 +4,7 @@ const initialState = {
     detallesFactura: [],
     adicionalesFactura: [],
     formasPagoFactura: [],
+    claveAcceso: null,
     valoresFactura: {
         subtotalDoce: 0, 
         subtotalCero: 0, 
@@ -39,6 +40,7 @@ export const facturaReducer = (state = initialState, action) =>{
                 adicionalesFactura: [],
                 formasPagoFactura: [],
                 valoresFactura: initialState.valoresFactura,
+                claveAcceso: null,
             }
         case types.facturaValoresFactura:
             return {
@@ -59,6 +61,11 @@ export const facturaReducer = (state = initialState, action) =>{
             return {
                 ...state,
                 formasPagoFactura: action.payload
+            }
+        case types.facturaObtenerClaveAcceso:
+            return {
+                ...state,
+                claveAcceso: action.payload
             }
         default:
             return state;

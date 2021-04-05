@@ -53,7 +53,7 @@ export const ValoresFactura = () => {
         const cero = obtenerSubtotalCero();
         const noIva = obtenerSubtotalNoIva();
         const exento = obtenerSubtotalExentoIva();
-        const iva = doce * 0.12;
+        const iva = Number((doce * 0.12).toFixed(2));
         const sinImpuestos = doce + cero + noIva + exento;
         const total = sinImpuestos + iva;
         dispatch(startAgregarValoresFactura({
