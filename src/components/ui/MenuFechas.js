@@ -67,7 +67,6 @@ export const MenuFechas = () => {
                     id="options-menu" 
                     aria-expanded="true" 
                     aria-haspopup="true"
-                    // onBlur={() => setOpen(false)}
                 >
                 {textoMenu}
                 <i className="ml-2 fas fa-sort-down"></i>

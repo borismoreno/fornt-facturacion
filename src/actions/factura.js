@@ -1,8 +1,6 @@
 import { fetchConToken } from '../helpers/fetch';
 import { types } from '../types/types';
-// import { saveAs } from 'file-saver';
 import { startOcultarCargando } from './alerta';
-// import { startLimpiarSeleccion } from './clientes';
 import { startObtenerDatosEmpresa } from './configuracion';
 
 export const startAgregarDetalle = (detalle) => {
@@ -105,16 +103,11 @@ export const startEmitirFactura = (envioFactura) => {
     return async (dispatch) => {
         try {
             const { empresa } = envioFactura;
-            // const pad = '000000000';
-            // const nombreArchivo = `${empresa.establecimiento}-${empresa.puntoEmision}-${pad.substring(0, pad.length - empresa.secuencialFactura.length) + empresa.secuencialFactura}`;
             const respuesta = await fetchConToken('comprobante/v2', envioFactura, 'POST');
             const body = await respuesta.json();
             if (body.ok) {
-                // saveAs(body, nombreArchivo);
                 dispatch(startOcultarCargando());
                 dispatch(startObtenerClaveAcceso(body.claveAcceso));
-                // dispatch(limpiarDatosFactura());
-                // dispatch(startLimpiarSeleccion());
                 dispatch(startObtenerDatosEmpresa(empresa._id));
             }
         } catch (error) {
