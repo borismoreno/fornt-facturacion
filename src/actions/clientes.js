@@ -3,7 +3,7 @@ import { types } from '../types/types';
 
 export const startObtenerClientes = () => {
     return async(dispatch) => {
-        const respuesta = await fetchConToken('clientes');
+        const respuesta = await fetchConToken('clientes/V2');
         const body = await respuesta.json();
         if (body.ok) {
             dispatch(obtenerClientes(body.clientes));
