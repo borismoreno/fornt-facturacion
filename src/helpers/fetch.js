@@ -1,3 +1,6 @@
+import { startLogout } from "../actions/auth";
+import { store } from '../store/store';
+
 const baseUrl = process.env.REACT_APP_API_URL;
 export const fetchSinToken = (endpoint, data, method = 'GET') => {
     const url = `${baseUrl}/${endpoint}`;
@@ -18,25 +21,6 @@ export const fetchSinToken = (endpoint, data, method = 'GET') => {
 export const fetchConToken = (endpoint, data, method = 'GET') => {
     const url = `${baseUrl}/${endpoint}`;
     const token = localStorage.getItem('token') || '';
-    // return fetch( url ,{
-    //     method,
-    //     headers: {
-    //         'x-auth-token': token
-    //     }
-    // }).then(response => {
-    //     if (!response.ok) {
-    //         return response.json()
-    //             .catch(() => {
-    //                 throw new Error(response.status);
-    //             })
-    //             .then(({msg}) => {
-    //                 throw new Error(msg || response.status);
-    //             })
-    //     }
-    //     return response.json();
-    // }).catch(err => {
-    //     console.log('Error fetch', err);
-    // });
     try {
         if ( method === 'GET' ) {
             return fetch( url ,{
@@ -44,6 +28,15 @@ export const fetchConToken = (endpoint, data, method = 'GET') => {
                 headers: {
                     'x-auth-token': token
                 }
+            })
+            .then(resp => {
+                if (resp.status === 401) {
+                    store.dispatch(startLogout());
+                }
+                return resp;
+            })
+            .catch(err => {
+                console.log('error fetch', err);
             });
         } else {
             return fetch( url, {
@@ -53,6 +46,15 @@ export const fetchConToken = (endpoint, data, method = 'GET') => {
                     'x-auth-token': token
                 },
                 body: JSON.stringify(data)
+            })
+            .then(resp => {
+                if (resp.status === 401) {
+                    store.dispatch(startLogout());
+                }
+                return resp;
+            })
+            .catch(err => {
+                console.log('error fetch', err);
             });
         }
     } catch (error) {
