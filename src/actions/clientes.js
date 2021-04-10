@@ -50,7 +50,6 @@ export const startGuardarCliente = (cliente) => {
     return async(dispatch) => {
         const respuesta = await fetchConToken('clientes/guardar-cliente', cliente, 'POST');
         const body = await respuesta.json();
-        console.log(body);
         if ( body.ok ) {
             dispatch(guardarCliente(body.cliente));
         }

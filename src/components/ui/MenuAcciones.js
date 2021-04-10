@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { startObtenerPdf } from '../../actions/comprobante';
+import { startObtenerError, startObtenerPdf, startReenviarMail } from '../../actions/comprobante';
 
-export const MenuAcciones = ({claveAcceso}) => {
+export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
     const handleDescargarPdf = () => {
@@ -14,6 +14,13 @@ export const MenuAcciones = ({claveAcceso}) => {
         setTimeout(() => {
             setOpen(false);
         }, 200);
+    }
+    const handleMostrarErrores = () => {
+        dispatch(startObtenerError(facturaId));
+    }
+
+    const handleReenvioMail = () => {
+        dispatch(startReenviarMail(claveAcceso));
     }
     return (
         <td 
@@ -27,8 +34,6 @@ export const MenuAcciones = ({claveAcceso}) => {
                 <i className="ml-2 fas fa-sort-down"></i>
                 </button>
             </div>
-
-            
             {open &&  
             <div 
                 className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10" 
@@ -40,22 +45,32 @@ export const MenuAcciones = ({claveAcceso}) => {
                     className="py-1 focus:outline-none" 
                     role="none"
                 >
+                    
                     <button 
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20"
-                        disabled={true}
-                    ><i className="fas fa-check-double"></i><span className="ml-4">Reprocesar</span></button>
-                    <button 
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 disabled:opacity-20"
+                        className="w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 disabled:opacity-20"
                         onClick={handleDescargarPdf}
                     ><i className="far fa-file-pdf"></i><span className="ml-4">Descargar PDF</span></button>
                     <button 
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20"
+                        className="w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20"
                         disabled={false}
+                        onClick={handleReenvioMail}
                     ><i className="far fa-envelope"></i><span className="ml-4">Reenvío Mail</span></button>
+                    <hr/>
                     <button 
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20"
+                        className={`px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 w-full ${(estado !== 'POR PROCESAR') ? 'hidden' : null}`}
+                    ><i className="fas fa-check-double"></i><span className="ml-4">Reprocesar</span></button>
+                    <button 
+                        className="w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20"
                         disabled={false}
                     ><i className="fas fa-exclamation-circle"></i><span className="ml-4">Marcar como anulada</span></button>
+                    <button 
+                        className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'DEVUELTA') ? 'hidden' : null}`}
+                        onClick={handleMostrarErrores}
+                    ><i className="fas fa-times"></i><span className="ml-4">Ver errores</span></button>
+                    <button 
+                        className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'RECIBIDA') ? 'hidden' : null}`}
+                        onClick={handleMostrarErrores}
+                    ><i className="fas fa-check"></i><span className="ml-4">Obtener Autorización</span></button>
                 </div>
             </div>}
         </td>

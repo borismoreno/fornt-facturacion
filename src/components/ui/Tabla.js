@@ -29,7 +29,7 @@ export const Tabla = ({titulo, headers = headersInitial, data = initialData, han
                         {
                             claves.map((clave, i) => {
                                 return (
-                                    clave !== "claveAcceso" && <td 
+                                    (clave !== "claveAcceso" && clave !== "facturaId") && <td 
                                         key={i}
                                         className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                                     >{item[clave]}</td>
@@ -50,6 +50,8 @@ export const Tabla = ({titulo, headers = headersInitial, data = initialData, han
                         {
                             acciones && <MenuAcciones
                                 claveAcceso={item["claveAcceso"]}
+                                estado={item["estado"]}
+                                facturaId={item["facturaId"]}
                             />
                         }
                     </tr>

@@ -42,4 +42,8 @@ export const types = {
     comprobanteIniciarObtenerPdf: '[comprobante] Iniciar Obtener PDF',
     comprobanteTerminarObtenerPdf: '[comprobante] Terminar Obtener PDF',
     comprobanteObtenerFechasBusqueda: '[comprobante] Obtener fechas de búsqueda',
+    comprobanteObtenerError: '[comprobante] Obtener error comprobante',
+    comprobanteLimpiarError: '[comprobante] Limpiar error comprobante',
+    comprobanteIniciarReenvioMail: '[comprobante] Iniciar reenvio mail',
+    comprobanteTerminarReenvioMail: '[comprobante] Terminar reenvio mail'
 }

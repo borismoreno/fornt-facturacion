@@ -7,6 +7,8 @@ import { Pagination } from '../ui/Pagination';
 import { Cargando } from '../ui/Cargando';
 import { MenuFechas } from '../ui/MenuFechas';
 import { ComprobanteVacio } from '../comprobantes/ComprobanteVacio';
+import { ErroresComprobante } from '../modals/ErroresComprobante';
+import { ReenvioMail } from '../modals/ReenvioMail';
 
 const headersEmitidos = [
     'Cliente',
@@ -22,7 +24,7 @@ export const FacturasEmitidasScreen = () => {
     const [emitidos, setEmitidos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin } = useSelector(state => state.comprobante);
+    const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin, errorDevuelta, claveReenvio } = useSelector(state => state.comprobante);
     useEffect(() => {
         dispatch(startObtenerComprobantesEmitidos(fechaInicio, fechaFin));
     }, [dispatch, fechaInicio, fechaFin])
@@ -38,6 +40,7 @@ export const FacturasEmitidasScreen = () => {
                         valor: `$${detalle.importeTotal}`,
                         estado: obtenerValorEstado(detalle.estadoComprobante),
                         claveAcceso: detalle.claveAcceso,
+                        facturaId: detalle._id,
                     }
                 )));
             } else {
@@ -51,25 +54,25 @@ export const FacturasEmitidasScreen = () => {
         let estado = '';
         switch (valor) {
             case 'PPR':
-                    estado = 'POR PROCESAR'
-                    break;
-                case 'AUT':
-                    estado = 'AUTORIZADO'
-                    break;
-                case 'NAT':
-                    estado = 'NO AUTORIZADO'
-                    break;
-                case 'REC':
-                    estado = 'RECIBIDA'
-                    break;
-                case 'EMA':
-                    estado = 'PAGO PENDIENTE'
-                    break;
-                case 'DEV':
-                    estado = 'DEVUELTA'
-                    break;
-                default:
-                    break;
+                estado = 'POR PROCESAR'
+                break;
+            case 'AUT':
+                estado = 'AUTORIZADO'
+                break;
+            case 'NAT':
+                estado = 'NO AUTORIZADO'
+                break;
+            case 'REC':
+                estado = 'RECIBIDA'
+                break;
+            case 'EMA':
+                estado = 'MAIL ENVIADO'
+                break;
+            case 'DEV':
+                estado = 'DEVUELTA'
+                break;
+            default:
+                break;
         }
         return estado;
     }
@@ -144,6 +147,12 @@ export const FacturasEmitidasScreen = () => {
             </div> */}
             {
                 descargandoPdf && <Cargando />
+            }
+            {
+                errorDevuelta && <ErroresComprobante />
+            }
+            {
+                claveReenvio && <ReenvioMail claveAcceso={claveReenvio} />
             }
         </div>
     )

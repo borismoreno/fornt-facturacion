@@ -11,7 +11,9 @@ const initialState = {
     comprobantesEmitidos: [],
     descargandoPdf: false,
     fechaFin: fin,
-    fechaInicio: inicio
+    fechaInicio: inicio,
+    errorDevuelta: null,
+    claveReenvio: null,
 }
 
 export const comprobanteReducer = (state = initialState, action) => {
@@ -36,6 +38,26 @@ export const comprobanteReducer = (state = initialState, action) => {
                 ...state,
                 fechaInicio: action.payload.fechaInicio,
                 fechaFin: action.payload.fechaFin,
+            }
+        case types.comprobanteObtenerError:
+            return {
+                ...state,
+                errorDevuelta: action.payload,
+            }
+        case types.comprobanteLimpiarError:
+            return {
+                ...state,
+                errorDevuelta: null,
+            }
+        case types.comprobanteIniciarReenvioMail:
+            return {
+                ...state,
+                claveReenvio: action.payload,
+            }
+        case types.comprobanteTerminarReenvioMail:
+            return {
+                ...state,
+                claveReenvio: null,
             }
         default:
             return state;

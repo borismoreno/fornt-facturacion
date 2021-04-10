@@ -33,6 +33,48 @@ export const startObtenerFechas = (fechaInicio, fechaFin) => {
     }
 }
 
+export const startObtenerError = (facturaId) => {
+    return async(dispatch) => {
+        const respuesta = await fetchConToken(`errores/error-devuelta/${facturaId}`);
+        const body = await respuesta.json();
+        if ( body.ok ) {
+            dispatch(obtenerError(body.errorDevuelta));
+        }
+    }
+}
+
+export const startLimpiarError = () => {
+    return async(dispatch) => {
+        dispatch(limpiarError());
+    }
+}
+
+export const startReenviarMail = (claveAcceso) => {
+    return async(dispatch) => {
+        dispatch(reenviarMail(claveAcceso));
+    }
+}
+
+export const terminarReenviarMail = () => {
+    return async(dispatch) => {
+        dispatch(limpiarReenvioMail());
+    }
+}
+
+export const startReenvio = (datos) => {
+    return async(dispatch) => {
+        try {
+            const respuesta = await fetchConToken('comprobante/reenvio-mail', datos, 'POST');
+            const body = await respuesta.json();
+            if (body.ok) {
+                dispatch(limpiarReenvioMail());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
 const obtenerComprobantesEmitidos = (comprobantes) => ({
     type: types.comprobanteObtenerEmitidos,
     payload: comprobantes
@@ -42,7 +84,21 @@ const iniciarObtenerPdf = () => ({type: types.comprobanteIniciarObtenerPdf})
 
 const terminarObtenerPdf = () => ({type: types.comprobanteTerminarObtenerPdf})
 
+const limpiarError = () => ({type: types.comprobanteLimpiarError})
+
 const obtenerFechas = (fechas) => ({
     type: types.comprobanteObtenerFechasBusqueda,
     payload: fechas
 })
+
+const obtenerError = (error) => ({
+    type: types.comprobanteObtenerError,
+    payload: error
+})
+
+const reenviarMail = (claveAcceso) => ({
+    type: types.comprobanteIniciarReenvioMail,
+    payload: claveAcceso
+}) 
+
+const limpiarReenvioMail = () => ({type: types.comprobanteTerminarReenvioMail});

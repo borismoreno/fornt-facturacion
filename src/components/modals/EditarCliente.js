@@ -77,6 +77,11 @@ export const EditarCliente = ({setShowModal, setShowClientes, identificacionIngr
                         )
         }),
         onSubmit: datos => {
+          tiposIdentificacion.forEach(tipo => {
+            if (tipo.codigo === datos.tipoIdentificacion) {
+              datos.tipoIdentificacion = tipo._id
+            }
+          });
             dispatch(startGuardarCliente(datos));
             setShowModal(false);
         }
