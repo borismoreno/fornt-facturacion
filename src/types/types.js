@@ -45,5 +45,7 @@ export const types = {
     comprobanteObtenerError: '[comprobante] Obtener error comprobante',
     comprobanteLimpiarError: '[comprobante] Limpiar error comprobante',
     comprobanteIniciarReenvioMail: '[comprobante] Iniciar reenvio mail',
-    comprobanteTerminarReenvioMail: '[comprobante] Terminar reenvio mail'
+    comprobanteTerminarReenvioMail: '[comprobante] Terminar reenvio mail',
+    comprobantePresentarReprocesar: '[comprobante] Presentar reprocesar',
+    comprobanteOcultarReprocesar: '[comprobante] Ocultar reprocesar',
 }

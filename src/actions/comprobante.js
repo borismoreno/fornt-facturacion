@@ -1,6 +1,7 @@
 import { fetchConToken } from '../helpers/fetch';
 import { saveAs } from 'file-saver';
 import { types } from '../types/types';
+import { startObtenerClaveAcceso } from './factura';
 
 export const startObtenerComprobantesEmitidos = (fechaInicio, fechaFin) => {
     return async(dispatch) => {
@@ -75,30 +76,64 @@ export const startReenvio = (datos) => {
     }
 }
 
+export const startPresentarReprocesar = (claveAcceso) => {
+    return (dispatch) => {
+        dispatch(presentarReprocesar(claveAcceso));
+    }
+}
+
+export const startOcultarReprocesar = () => {
+    return (dispatch) => {
+        dispatch(ocultarReprocesar());
+    }
+}
+
+export const startReprocesarComprobante = (claveAcceso) => {
+    return async(dispatch) => {
+        try {
+            const respuesta = await fetchConToken('comprobante/reenvio', {claveAcceso}, 'POST');
+            const body = await respuesta.json();
+            if (body.ok) {
+                dispatch(startObtenerClaveAcceso(body.claveAcceso));
+                dispatch(ocultarReprocesar());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
 const obtenerComprobantesEmitidos = (comprobantes) => ({
     type: types.comprobanteObtenerEmitidos,
     payload: comprobantes
-})
+});
 
-const iniciarObtenerPdf = () => ({type: types.comprobanteIniciarObtenerPdf})
+const iniciarObtenerPdf = () => ({type: types.comprobanteIniciarObtenerPdf});
 
-const terminarObtenerPdf = () => ({type: types.comprobanteTerminarObtenerPdf})
+const terminarObtenerPdf = () => ({type: types.comprobanteTerminarObtenerPdf});
 
-const limpiarError = () => ({type: types.comprobanteLimpiarError})
+const limpiarError = () => ({type: types.comprobanteLimpiarError});
 
 const obtenerFechas = (fechas) => ({
     type: types.comprobanteObtenerFechasBusqueda,
     payload: fechas
-})
+});
 
 const obtenerError = (error) => ({
     type: types.comprobanteObtenerError,
     payload: error
-})
+});
 
 const reenviarMail = (claveAcceso) => ({
     type: types.comprobanteIniciarReenvioMail,
     payload: claveAcceso
-}) 
+});
 
 const limpiarReenvioMail = () => ({type: types.comprobanteTerminarReenvioMail});
+
+const presentarReprocesar = (claveAcceso) => ({
+    type: types.comprobantePresentarReprocesar,
+    payload: claveAcceso
+});
+
+const ocultarReprocesar = () => ({type: types.comprobanteOcultarReprocesar});

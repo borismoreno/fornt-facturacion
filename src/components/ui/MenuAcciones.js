@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { startObtenerError, startObtenerPdf, startReenviarMail } from '../../actions/comprobante';
+import { startObtenerError, startObtenerPdf, startPresentarReprocesar, startReenviarMail } from '../../actions/comprobante';
 
 export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
     const [open, setOpen] = useState(false);
@@ -21,6 +21,10 @@ export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
 
     const handleReenvioMail = () => {
         dispatch(startReenviarMail(claveAcceso));
+    }
+
+    const handleReprocesar = () => {
+        dispatch(startPresentarReprocesar(claveAcceso));
     }
     return (
         <td 
@@ -58,9 +62,10 @@ export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
                     <hr/>
                     <button 
                         className={`px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 w-full ${(estado !== 'POR PROCESAR') ? 'hidden' : null}`}
+                        onClick={handleReprocesar}
                     ><i className="fas fa-check-double"></i><span className="ml-4">Reprocesar</span></button>
                     <button 
-                        className="w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20"
+                        className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'PROCESADA') ? 'hidden' : null}`}
                         disabled={false}
                     ><i className="fas fa-exclamation-circle"></i><span className="ml-4">Marcar como anulada</span></button>
                     <button 

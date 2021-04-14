@@ -9,6 +9,8 @@ import { MenuFechas } from '../ui/MenuFechas';
 import { ComprobanteVacio } from '../comprobantes/ComprobanteVacio';
 import { ErroresComprobante } from '../modals/ErroresComprobante';
 import { ReenvioMail } from '../modals/ReenvioMail';
+import { ReprocesarComprobante } from '../modals/ReprocesarComprobante';
+import { ImprimirComprobante } from '../modals/ImprimirComprobante';
 
 const headersEmitidos = [
     'Cliente',
@@ -19,12 +21,13 @@ const headersEmitidos = [
     ''
 ]
 
-export const FacturasEmitidasScreen = () => {
+export const FacturasEmitidasScreen = ({history}) => {
     const dispatch = useDispatch();
     const [emitidos, setEmitidos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin, errorDevuelta, claveReenvio } = useSelector(state => state.comprobante);
+    const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin, errorDevuelta, claveReenvio, claveReprocesar } = useSelector(state => state.comprobante);
+    const { claveAcceso } = useSelector(state => state.factura);
     useEffect(() => {
         dispatch(startObtenerComprobantesEmitidos(fechaInicio, fechaFin));
     }, [dispatch, fechaInicio, fechaFin])
@@ -66,7 +69,7 @@ export const FacturasEmitidasScreen = () => {
                 estado = 'RECIBIDA'
                 break;
             case 'EMA':
-                estado = 'MAIL ENVIADO'
+                estado = 'PROCESADA'
                 break;
             case 'DEV':
                 estado = 'DEVUELTA'
@@ -129,22 +132,6 @@ export const FacturasEmitidasScreen = () => {
             </div>
                 ): <div className="flex justify-center rounded-md border border-blue-400 p-4"><ComprobanteVacio /></div>
             }
-            {/* <div>
-                <Tabla
-                    data={currentRows}
-                    headers={headersEmitidos}
-                    acciones={true}
-                />
-                {
-                    emitidos.length > 10 && <Pagination
-                        rowsPerPage={rowsPerPage}
-                        totalRows={emitidos.length}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                        setRowsPerPage={setRowsPerPage}
-                    />
-                }
-            </div> */}
             {
                 descargandoPdf && <Cargando />
             }
@@ -153,6 +140,12 @@ export const FacturasEmitidasScreen = () => {
             }
             {
                 claveReenvio && <ReenvioMail claveAcceso={claveReenvio} />
+            }
+            {
+                claveReprocesar && <ReprocesarComprobante claveAcceso={claveReprocesar} />
+            }
+            {
+                claveAcceso && <ImprimirComprobante claveAcceso={claveAcceso} history={history} />
             }
         </div>
     )
