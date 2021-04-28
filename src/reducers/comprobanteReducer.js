@@ -70,6 +70,13 @@ export const comprobanteReducer = (state = initialState, action) => {
                 ...state,
                 claveReprocesar: null,
             }
+        case types.comprobanteActualizarComprobantes:
+            return {
+                ...state,
+                comprobantesEmitidos: state.comprobantesEmitidos.map(comprobante => 
+                    (comprobante.claveAcceso === action.payload.claveAcceso) ? comprobante = action.payload: 
+                    comprobante)
+            }
         default:
             return state;
     }

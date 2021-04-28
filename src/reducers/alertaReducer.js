@@ -4,6 +4,7 @@ const initialState = {
     mostrarError: false,
     mensajeError: '',
     mostrarCargando: false,
+    tipoMensaje: 'error',
 }
 
 export const alertaReducer = (state = initialState, action) => {
@@ -12,7 +13,8 @@ export const alertaReducer = (state = initialState, action) => {
             return {
                 ...state,
                 mostrarError: true,
-                mensajeError: action.payload
+                mensajeError: action.payload.mensaje,
+                tipoMensaje: action.payload.tipoMensaje
             };
         case types.alertaOcultar:
             return {

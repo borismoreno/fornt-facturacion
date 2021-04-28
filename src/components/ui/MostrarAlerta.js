@@ -4,7 +4,7 @@ import { startOcultarError } from '../../actions/alerta';
 
 export const MostrarAlerta = () => {
     const dispatch = useDispatch();
-    const { mostrarError, mensajeError } = useSelector(state => state.alerta);
+    const { mostrarError, mensajeError, tipoMensaje } = useSelector(state => state.alerta);
     const handleCerrar = () => {
         dispatch(startOcultarError());
     }
@@ -12,7 +12,7 @@ export const MostrarAlerta = () => {
         <div>
             {
                 mostrarError && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded fixed z-10 top-5 right-5 w-96" role="alert">
+                    <div className={`border ${(tipoMensaje !== 'error') ? 'bg-green-100 border-green-400 text-green-400': 'bg-red-100 border-red-400 text-red-700'} px-4 py-3 rounded fixed z-10 top-5 right-5 w-96`} role="alert">
                         {/* <strong className="font-bold">Error!</strong><br/> */}
                         <span className="block sm:inline">{ mensajeError }</span>
                         <span className="absolute top-0 bottom-0 right-0 px-4 py-3">

@@ -28,6 +28,7 @@ export const FacturasEmitidasScreen = ({history}) => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin, errorDevuelta, claveReenvio, claveReprocesar } = useSelector(state => state.comprobante);
     const { claveAcceso } = useSelector(state => state.factura);
+    const { cargando } = useSelector(state => state.ui);
     useEffect(() => {
         dispatch(startObtenerComprobantesEmitidos(fechaInicio, fechaFin));
     }, [dispatch, fechaInicio, fechaFin])
@@ -146,6 +147,9 @@ export const FacturasEmitidasScreen = ({history}) => {
             }
             {
                 claveAcceso && <ImprimirComprobante claveAcceso={claveAcceso} history={history} />
+            }
+            {
+                cargando && <Cargando />
             }
         </div>
     )

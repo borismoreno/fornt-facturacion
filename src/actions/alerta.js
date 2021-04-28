@@ -1,8 +1,8 @@
 import { types } from '../types/types';
 
-export const startMostrarError = (mensajeError) => {
+export const startMostrarError = (mensajeError, tipoMensaje = 'error') => {
     return (dispatch) => {
-        dispatch(mostrarError(mensajeError));
+        dispatch(mostrarError(mensajeError, tipoMensaje));
         setTimeout(() => {
             dispatch(ocultarError());
         }, 3000);
@@ -27,9 +27,9 @@ export const startOcultarCargando = () => {
     }
 }
 
-const mostrarError = mensaje => ({ 
+const mostrarError = (mensaje, tipoMensaje) => ({ 
     type: types.alertaMostrar ,
-    payload: mensaje
+    payload: {mensaje, tipoMensaje}
 });
 
 const ocultarError = () => ({ type: types.alertaOcultar })

@@ -2,6 +2,8 @@ import { fetchConToken } from '../helpers/fetch';
 import { saveAs } from 'file-saver';
 import { types } from '../types/types';
 import { startObtenerClaveAcceso } from './factura';
+import { startOcultarCargando } from './ui';
+import { startMostrarError } from './alerta';
 
 export const startObtenerComprobantesEmitidos = (fechaInicio, fechaFin) => {
     return async(dispatch) => {
@@ -69,6 +71,7 @@ export const startReenvio = (datos) => {
             const body = await respuesta.json();
             if (body.ok) {
                 dispatch(limpiarReenvioMail());
+                dispatch(startMostrarError('Mail enviado correctamente.', 'correcto'));
             }
         } catch (error) {
             console.log(error);
@@ -103,6 +106,39 @@ export const startReprocesarComprobante = (claveAcceso) => {
     }
 }
 
+export const startObtenerAutorizacion = (claveAcceso) => {
+    return async(dispatch) => {
+        try {
+            await fetchConToken('comprobante/obtener-autorizacion', {claveAcceso}, 'POST');
+            dispatch(startOcultarCargando());
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const startEnviarMail = (claveAcceso) => {
+    return async(dispatch) => {
+        try {
+            const respuesta = await fetchConToken('comprobante/enviar-mail', {claveAcceso}, 'POST');
+            const body = await respuesta.json();
+            if ( body.ok ) {
+                const { comprobante } = body;
+                comprobante.estadoComprobante = 'EMA';
+                dispatch(startMostrarError('Mail enviado correctamente.', 'correcto'));
+                dispatch(actualizarComprobantes(comprobante));
+            } else {
+                if ( body.msg ) {
+                    dispatch(startMostrarError(body.msg));
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        dispatch(startOcultarCargando());
+    }
+}
+
 const obtenerComprobantesEmitidos = (comprobantes) => ({
     type: types.comprobanteObtenerEmitidos,
     payload: comprobantes
@@ -128,6 +164,11 @@ const reenviarMail = (claveAcceso) => ({
     type: types.comprobanteIniciarReenvioMail,
     payload: claveAcceso
 });
+
+const actualizarComprobantes = (comprobante) => ({
+    type: types.comprobanteActualizarComprobantes,
+    payload: comprobante
+})
 
 const limpiarReenvioMail = () => ({type: types.comprobanteTerminarReenvioMail});
 

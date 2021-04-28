@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { startObtenerError, startObtenerPdf, startPresentarReprocesar, startReenviarMail } from '../../actions/comprobante';
+import { startEnviarMail, startObtenerAutorizacion, startObtenerError, startObtenerPdf, startPresentarReprocesar, startReenviarMail } from '../../actions/comprobante';
+import { startMostrarCargando } from '../../actions/ui';
 
 export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
     const [open, setOpen] = useState(false);
@@ -25,6 +26,16 @@ export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
 
     const handleReprocesar = () => {
         dispatch(startPresentarReprocesar(claveAcceso));
+    }
+
+    const handleObtenerAutorizacion = () => {
+        dispatch(startMostrarCargando());
+        dispatch(startObtenerAutorizacion(claveAcceso));
+    }
+
+    const handleEnviarMail = () => {
+        dispatch(startMostrarCargando());
+        dispatch(startEnviarMail(claveAcceso));
     }
     return (
         <td 
@@ -74,8 +85,12 @@ export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
                     ><i className="fas fa-times"></i><span className="ml-4">Ver errores</span></button>
                     <button 
                         className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'RECIBIDA') ? 'hidden' : null}`}
-                        onClick={handleMostrarErrores}
+                        onClick={handleObtenerAutorizacion}
                     ><i className="fas fa-check"></i><span className="ml-4">Obtener Autorización</span></button>
+                    <button 
+                        className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'AUTORIZADO') ? 'hidden' : null}`}
+                        onClick={handleEnviarMail}
+                    ><i className="fas fa-envelope"></i><span className="ml-4">Enviar Mail</span></button>
                 </div>
             </div>}
         </td>
