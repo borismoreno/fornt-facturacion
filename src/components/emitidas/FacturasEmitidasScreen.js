@@ -12,6 +12,7 @@ import { ReenvioMail } from '../modals/ReenvioMail';
 import { ReprocesarComprobante } from '../modals/ReprocesarComprobante';
 import { ImprimirComprobante } from '../modals/ImprimirComprobante';
 import { startMostrarCargando } from '../../actions/ui';
+import { ExportarExcel } from '../ui/ExportarExcel';
 
 const headersEmitidos = [
     'Cliente',
@@ -27,6 +28,7 @@ export const FacturasEmitidasScreen = ({history}) => {
     const [emitidos, setEmitidos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [datosExcel, setDatosExcel] = useState([]);
     const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin, errorDevuelta, claveReenvio, claveReprocesar, claveAnular } = useSelector(state => state.comprobante);
     const { claveAcceso } = useSelector(state => state.factura);
     const { cargando } = useSelector(state => state.ui);
@@ -48,12 +50,52 @@ export const FacturasEmitidasScreen = ({history}) => {
                         facturaId: detalle._id,
                     }
                 )));
+                const data = obtenerDatosReporte();
+                setDatosExcel([{
+                    xSteps: 1,
+                    ySteps: 1,
+                    columns: ["Identificación",
+                    "Cliente",
+                    "Fecha" ,
+                    "Establecimiento",
+                    "Punto" ,
+                    "Secuencial",
+                    "Clave" ,
+                    "Total" ,
+                    "Descuento",
+                    "IVA",
+                    "Total",
+                    "Estado"],
+                    data,
+                }])
             } else {
                 setEmitidos([]);
             }
         }
         obtenerEmitidos();
+        // eslint-disable-next-line
     }, [comprobantesEmitidos])
+
+    const obtenerDatosReporte = () => {
+        if (comprobantesEmitidos.length > 0) {
+            return comprobantesEmitidos.map(comprobante => {
+                return [
+                    comprobante.identificacionComprador,
+                    comprobante.razonSocialComprador,
+                    comprobante.fechaEmision,
+                    comprobante.estab,
+                    comprobante.ptoEmi,
+                    comprobante.secuencial,
+                    comprobante.claveAcceso,
+                    comprobante.totalSinImpuestos,
+                    comprobante.totalDescuento,
+                    comprobante.totalIva,
+                    comprobante.importeTotal,
+                    obtenerValorEstado(comprobante.estadoComprobante),
+                ]
+            })
+        }
+    }
 
     const handleReprocesar = () => {
         dispatch(startReprocesarComprobante(claveReprocesar));
@@ -109,8 +151,9 @@ export const FacturasEmitidasScreen = ({history}) => {
             className="container mx-auto mb-6"
         >
             <div className="flex justify-between mb-4">
-                <div>
+                <div className="flex">
                     <MenuFechas />
+                    <ExportarExcel multiDataSet={datosExcel} valorBoton="Exportar a excel" nombreArchivo="Facturas Emitidas" nombreHoja="Facturas"/>
                 </div>
                 {/* <h2 className="text-2xl font-bold mb-6 pb-2 tracking-wider uppercase"></h2> */}
                 <div>
