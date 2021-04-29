@@ -91,6 +91,18 @@ export const startOcultarReprocesar = () => {
     }
 }
 
+export const startPresentarAnular = (claveAcceso) => {
+    return (dispatch) => {
+        dispatch(presentarAnular(claveAcceso));
+    }
+}
+
+export const startOcultarAnular = () => {
+    return (dispatch) => {
+        dispatch(ocultarAnular());
+    }
+}
+
 export const startReprocesarComprobante = (claveAcceso) => {
     return async(dispatch) => {
         try {
@@ -126,6 +138,29 @@ export const startEnviarMail = (claveAcceso) => {
                 const { comprobante } = body;
                 comprobante.estadoComprobante = 'EMA';
                 dispatch(startMostrarError('Mail enviado correctamente.', 'correcto'));
+                dispatch(actualizarComprobantes(comprobante));
+            } else {
+                if ( body.msg ) {
+                    dispatch(startMostrarError(body.msg));
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        dispatch(startOcultarCargando());
+    }
+}
+
+export const startAnularComprobante = (claveAcceso) => {
+    return async(dispatch) => {
+        try {
+            const respuesta = await fetchConToken('comprobante/anular-comprobante', {claveAcceso}, 'POST');
+            const body = await respuesta.json();
+            if ( body.ok ) {
+                const { comprobante } = body;
+                comprobante.estadoComprobante = 'ANU';
+                dispatch(startMostrarError('Comprobante anulado correctamente.', 'correcto'));
+                dispatch(ocultarAnular());
                 dispatch(actualizarComprobantes(comprobante));
             } else {
                 if ( body.msg ) {
@@ -178,3 +213,10 @@ const presentarReprocesar = (claveAcceso) => ({
 });
 
 const ocultarReprocesar = () => ({type: types.comprobanteOcultarReprocesar});
+
+const presentarAnular = (claveAcceso) => ({
+    type: types.comprobantePresentarAnular,
+    payload: claveAcceso
+});
+
+const ocultarAnular = () => ({type: types.comprobanteOcultarAnular});

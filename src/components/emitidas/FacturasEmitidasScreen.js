@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { startObtenerComprobantesEmitidos } from '../../actions/comprobante';
+import { startAnularComprobante, startObtenerComprobantesEmitidos, startOcultarAnular, startOcultarReprocesar, startReprocesarComprobante } from '../../actions/comprobante';
 import { Tabla } from '../ui/Tabla';
 import { Pagination } from '../ui/Pagination';
 import { Cargando } from '../ui/Cargando';
@@ -11,6 +11,7 @@ import { ErroresComprobante } from '../modals/ErroresComprobante';
 import { ReenvioMail } from '../modals/ReenvioMail';
 import { ReprocesarComprobante } from '../modals/ReprocesarComprobante';
 import { ImprimirComprobante } from '../modals/ImprimirComprobante';
+import { startMostrarCargando } from '../../actions/ui';
 
 const headersEmitidos = [
     'Cliente',
@@ -26,7 +27,7 @@ export const FacturasEmitidasScreen = ({history}) => {
     const [emitidos, setEmitidos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin, errorDevuelta, claveReenvio, claveReprocesar } = useSelector(state => state.comprobante);
+    const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin, errorDevuelta, claveReenvio, claveReprocesar, claveAnular } = useSelector(state => state.comprobante);
     const { claveAcceso } = useSelector(state => state.factura);
     const { cargando } = useSelector(state => state.ui);
     useEffect(() => {
@@ -54,6 +55,23 @@ export const FacturasEmitidasScreen = ({history}) => {
         obtenerEmitidos();
     }, [comprobantesEmitidos])
 
+    const handleReprocesar = () => {
+        dispatch(startReprocesarComprobante(claveReprocesar));
+    }
+
+    const handleCerrarReprocesar = () => {
+        dispatch(startOcultarReprocesar());
+    }
+
+    const handleAnular = () => {
+        dispatch(startMostrarCargando());
+        dispatch(startAnularComprobante(claveAnular));
+    }
+
+    const handleCerrarAnular = () => {
+        dispatch(startOcultarAnular());
+    }
+
     const obtenerValorEstado = (valor) => {
         let estado = '';
         switch (valor) {
@@ -74,6 +92,9 @@ export const FacturasEmitidasScreen = ({history}) => {
                 break;
             case 'DEV':
                 estado = 'DEVUELTA'
+                break;
+            case 'ANU':
+                estado = 'ANULADA'
                 break;
             default:
                 break;
@@ -143,7 +164,10 @@ export const FacturasEmitidasScreen = ({history}) => {
                 claveReenvio && <ReenvioMail claveAcceso={claveReenvio} />
             }
             {
-                claveReprocesar && <ReprocesarComprobante claveAcceso={claveReprocesar} />
+                claveReprocesar && <ReprocesarComprobante claveAcceso={claveReprocesar} handleAccion={handleReprocesar} handleCerrar={handleCerrarReprocesar} accion='Reprocesar' />
+            }
+            {
+                claveAnular && <ReprocesarComprobante claveAcceso={claveAnular} handleAccion={handleAnular} handleCerrar={handleCerrarAnular} accion='Anular' />
             }
             {
                 claveAcceso && <ImprimirComprobante claveAcceso={claveAcceso} history={history} />

@@ -48,6 +48,8 @@ export const types = {
     comprobanteTerminarReenvioMail: '[comprobante] Terminar reenvio mail',
     comprobantePresentarReprocesar: '[comprobante] Presentar reprocesar',
     comprobanteOcultarReprocesar: '[comprobante] Ocultar reprocesar',
+    comprobantePresentarAnular: '[comprobante] Presentar anular',
+    comprobanteOcultarAnular: '[comprobante] Ocultar anular',
     comprobanteActualizarComprobantes: '[comprobante] Actualizar comprobantes',
 
     uiMostrarCargando: '[ui] Mostrar Cargando',

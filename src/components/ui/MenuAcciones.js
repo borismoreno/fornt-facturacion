@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { startEnviarMail, startObtenerAutorizacion, startObtenerError, startObtenerPdf, startPresentarReprocesar, startReenviarMail } from '../../actions/comprobante';
+import { startEnviarMail, startObtenerAutorizacion, startObtenerError, startObtenerPdf, startPresentarAnular, startPresentarReprocesar, startReenviarMail } from '../../actions/comprobante';
 import { startMostrarCargando } from '../../actions/ui';
 
 export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
@@ -36,6 +36,10 @@ export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
     const handleEnviarMail = () => {
         dispatch(startMostrarCargando());
         dispatch(startEnviarMail(claveAcceso));
+    }
+
+    const handleAnularComprobante = () => {
+        dispatch(startPresentarAnular(claveAcceso));
     }
     return (
         <td 
@@ -77,7 +81,7 @@ export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
                     ><i className="fas fa-check-double"></i><span className="ml-4">Reprocesar</span></button>
                     <button 
                         className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'PROCESADA') ? 'hidden' : null}`}
-                        disabled={false}
+                        onClick={handleAnularComprobante}
                     ><i className="fas fa-exclamation-circle"></i><span className="ml-4">Marcar como anulada</span></button>
                     <button 
                         className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'DEVUELTA') ? 'hidden' : null}`}

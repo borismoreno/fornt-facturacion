@@ -1,16 +1,16 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { startOcultarReprocesar, startReprocesarComprobante } from '../../actions/comprobante';
+// import { useDispatch } from 'react-redux';
+// import { startOcultarReprocesar, startReprocesarComprobante } from '../../actions/comprobante';
 
-export const ReprocesarComprobante = ({claveAcceso}) => {
-    const dispatch = useDispatch();
-    const handleCerrar = () => {
-        dispatch(startOcultarReprocesar());
-    }
+export const ReprocesarComprobante = ({claveAcceso, handleAccion, accion, handleCerrar}) => {
+    // const dispatch = useDispatch();
+    // const handleCerrar = () => {
+    //     dispatch(startOcultarReprocesar());
+    // }
 
-    const handleReprocesar = () => {
-        dispatch(startReprocesarComprobante(claveAcceso));
-    }
+    // const handleReprocesar = () => {
+    //     dispatch(startReprocesarComprobante(claveAcceso));
+    // }
     return (
         <>
             <div 
@@ -22,7 +22,7 @@ export const ReprocesarComprobante = ({claveAcceso}) => {
                         {/*header*/}
                         <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                         <h3 className="text-2xl font-semibold">
-                            Reprocesar Comprobante
+                            {accion} Comprobante
                         </h3>
                         <button
                             className="p-1 ml-auto border-0 text-black float-right text-lg leading-none font-semibold outline-none focus:outline-none"
@@ -38,7 +38,7 @@ export const ReprocesarComprobante = ({claveAcceso}) => {
                             <div
                                 className="md:px-6 mb-6"
                             >
-                                <span>Está seguro de reprocesar el comprobante <strong>{claveAcceso}</strong>?</span>
+                                <span>Está seguro de {accion.toLowerCase()} el comprobante <strong>{claveAcceso}</strong>?</span>
                                 {/* <label
                                 htmlFor="mail"
                                 className="text-xs font-bold"
@@ -78,7 +78,7 @@ export const ReprocesarComprobante = ({claveAcceso}) => {
                                 className="bg-blue-500 text-white hover:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                                 type="button"
                                 style={{ transition: "all .15s ease" }}
-                                onClick={handleReprocesar}
+                                onClick={handleAccion}
                             >
                                 Si
                             </button>
