@@ -20,7 +20,10 @@ export const NuevoAdicional = ({setShowModal}) => {
         }),
         onSubmit: datos => {
             setShowModal(false);
-            dispatch(startAgregarAdicional(datos));
+            dispatch(startAgregarAdicional({
+              nombreAdicional: datos.nombreAdicional.toUpperCase(),
+              valorAdicional: datos.valorAdicional.toUpperCase()
+            }));
         }
     })
     return (
@@ -57,7 +60,7 @@ export const NuevoAdicional = ({setShowModal}) => {
                     >Nombre</label>
                       <input
                         id="nombreAdicional"
-                        className="w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg mt-2 text-sm"
+                        className="w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg mt-2 text-sm uppercase"
                         placeholder="Nombre Dato Adicional"
                         name="nombreAdicional"
                         autoComplete="off"
@@ -84,7 +87,7 @@ export const NuevoAdicional = ({setShowModal}) => {
                     >Valor</label>
                       <input
                         id="valorAdicional"
-                        className="w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg mt-2 text-sm"
+                        className="w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg mt-2 text-sm uppercase"
                         placeholder="Valor Dato Adicional"
                         name="valorAdicional"
                         autoComplete="off"

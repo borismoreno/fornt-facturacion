@@ -70,9 +70,11 @@ export const startReenvio = (datos) => {
             const respuesta = await fetchConToken('comprobante/reenvio-mail', datos, 'POST');
             const body = await respuesta.json();
             if (body.ok) {
-                dispatch(limpiarReenvioMail());
                 dispatch(startMostrarError('Mail enviado correctamente.', 'correcto'));
+            } else {
+                dispatch(startMostrarError('Hubo un error al enviar el mail.'));
             }
+            dispatch(limpiarReenvioMail());
         } catch (error) {
             console.log(error);
         }
@@ -154,19 +156,22 @@ export const startEnviarMail = (claveAcceso) => {
 export const startAnularComprobante = (claveAcceso) => {
     return async(dispatch) => {
         try {
-            const respuesta = await fetchConToken('comprobante/anular-comprobante', {claveAcceso}, 'POST');
-            const body = await respuesta.json();
-            if ( body.ok ) {
-                const { comprobante } = body;
-                comprobante.estadoComprobante = 'ANU';
                 dispatch(startMostrarError('Comprobante anulado correctamente.', 'correcto'));
                 dispatch(ocultarAnular());
-                dispatch(actualizarComprobantes(comprobante));
-            } else {
-                if ( body.msg ) {
-                    dispatch(startMostrarError(body.msg));
-                }
-            }
+                // dispatch(actualizarComprobantes(comprobante));
+            //     const respuesta = await fetchConToken('comprobante/anular-comprobante', {claveAcceso}, 'POST');
+            // const body = await respuesta.json();
+            // if ( body.ok ) {
+            //     const { comprobante } = body;
+            //     comprobante.estadoComprobante = 'ANU';
+            //     dispatch(startMostrarError('Comprobante anulado correctamente.', 'correcto'));
+            //     dispatch(ocultarAnular());
+            //     dispatch(actualizarComprobantes(comprobante));
+            // } else {
+            //     if ( body.msg ) {
+            //         dispatch(startMostrarError(body.msg));
+            //     }
+            // }
         } catch (error) {
             console.log(error);
         }

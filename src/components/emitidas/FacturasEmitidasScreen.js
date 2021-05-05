@@ -70,6 +70,7 @@ export const FacturasEmitidasScreen = ({history}) => {
                 }])
             } else {
                 setEmitidos([]);
+                setDatosExcel([]);
             }
         }
         obtenerEmitidos();

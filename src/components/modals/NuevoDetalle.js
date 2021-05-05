@@ -70,7 +70,7 @@ export const NuevoDetalle = ({setShowModal}) => {
     }
 
     const calcularSubtotal = (cantidad, precioUnitario) => {
-        return cantidad * precioUnitario;
+        return Number((cantidad * precioUnitario).toFixed(2));
     }
     return (
         <>

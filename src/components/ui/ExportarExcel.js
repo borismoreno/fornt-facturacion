@@ -9,7 +9,9 @@ export const ExportarExcel = ({multiDataSet, valorBoton = 'Exportar a Excel', no
         <div className="inline-block text-center p-2">
             <ExcelFile element={
                     <button 
-                        className="text-xs uppercase p-2 font-bold block bg-blue-400 text-white rounded-md border shadow-lg hover:bg-blue-700">
+                        className={`text-xs uppercase p-2 font-bold block bg-blue-400 text-white rounded-md border shadow-lg disabled:opacity-40 ${(multiDataSet.length > 0) ? 'hover:bg-blue-700': null}`}
+                        disabled={multiDataSet.length === 0}
+                    >
                         {valorBoton}
                         <i className="ml-2 far fa-file-excel"></i>
                     </button>
