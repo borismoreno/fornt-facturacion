@@ -82,6 +82,8 @@ export const EditarCliente = ({setShowModal, setShowClientes, identificacionIngr
               datos.tipoIdentificacion = tipo._id
             }
           });
+          datos.razonSocial = datos.razonSocial.toUpperCase();
+          datos.direccion = datos.direccion.toUpperCase();
             dispatch(startGuardarCliente(datos));
             setShowModal(false);
         }
@@ -170,7 +172,7 @@ export const EditarCliente = ({setShowModal, setShowClientes, identificacionIngr
                     >Nombre Cliente</label>
                       <input
                         id="razonSocial"
-                        className="w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg mt-2 text-sm"
+                        className="uppercase w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg mt-2 text-sm"
                         placeholder="Nombre Cliente"
                         autoComplete="off"
                         name="razonSocial"
@@ -196,7 +198,7 @@ export const EditarCliente = ({setShowModal, setShowClientes, identificacionIngr
                     >Dirección</label>
                       <input
                         id="direccion"
-                        className="w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg mt-2 text-sm"
+                        className="uppercase w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg mt-2 text-sm"
                         placeholder="Dirección Cliente"
                         name="direccion"
                         autoComplete="off"
