@@ -85,23 +85,15 @@ const Sidebar = () => {
                     <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                     <li className="items-center">
                         <NavLink
-                            className="text-xs uppercase py-3 font-bold block text-gray-800 hover:text-gray-600"
-                            activeClassName="text-blue-500 hover:text-blue-600"
-                        // className={
-                        //     "text-xs uppercase py-3 font-bold block " +
-                        //     (window.location.href.indexOf("/admin/dashboard") !== -1
-                        //     ? "text-blue-500 hover:text-blue-600"
-                        //     : "text-gray-800 hover:text-gray-600")
-                        // }
-                        to="/dashboard"
-                        >
-                        <i
-                            className={
-                            "fas fa-tv mr-2 text-sm " +
+                            className={"text-xs uppercase py-3 px-3 rounded-md font-bold block text-gray-800 hover:text-gray-600" +
                             (window.location.href.indexOf("/dashboard") !== -1
-                                ? "opacity-75"
+                                ? "opacity-75 bg-blue-300"
                                 : "text-gray-400")
                             }
+                            to="/dashboard"
+                        >
+                        <i
+                            className="fas fa-tv mr-2 text-sm "
                         ></i>{" "}
                         Dashboard
                         </NavLink>
@@ -110,40 +102,19 @@ const Sidebar = () => {
                     <hr className="my-4 md:min-w-full" />
                     {/* Heading */}
                     <h6 className="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                    Comprobantes
+                        Comprobantes
                     </h6>
-
-                    {/* <li className="items-center">
-                        <NavLink
-                            className="text-xs uppercase py-3 font-bold block text-gray-800 hover:text-gray-600"
-                            activeClassName="text-blue-500 hover:text-blue-600"
-                            to="/factura"
-                        >
-                        <i
-                            className={
-                            "fas fa-file-alt mr-2 text-sm " +
-                            (window.location.href.indexOf("/factura") !== -1
-                                ? "opacity-75"
-                                : "text-gray-400")
-                            }
-                        ></i>{" "}
-                        Factura
-                        </NavLink>
-                    </li> */}
-
                     <li className="items-center">
                         <NavLink
-                            className="text-xs uppercase py-3 font-bold block text-gray-800 hover:text-gray-600"
-                            activeClassName="text-blue-500 hover:text-blue-600"
+                            className={"text-xs uppercase py-3 px-3 rounded-md font-bold block text-gray-800 hover:text-gray-600" +
+                            (window.location.href.indexOf("/emitidas") !== -1
+                                ? "opacity-75 bg-blue-300"
+                                : "text-gray-400")
+                            }
                             to="/emitidas"
                         >
                         <i
-                            className={
-                            "far fa-list-alt mr-2 text-sm " +
-                            (window.location.href.indexOf("/emitidas") !== -1
-                                ? "opacity-75"
-                                : "text-gray-400")
-                            }
+                            className="far fa-list-alt mr-2 text-sm "
                         ></i>{" "}
                         Facturas
                         </NavLink>

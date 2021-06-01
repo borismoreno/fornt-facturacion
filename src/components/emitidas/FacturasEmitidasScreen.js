@@ -161,7 +161,7 @@ export const FacturasEmitidasScreen = ({history}) => {
                     <div className="relative mr-4 inline-block">
                         <NavLink
                             className="text-xs uppercase py-3 font-bold block bg-blue-400 text-white rounded-md border p-4 shadow-lg hover:bg-blue-700"
-                            to="/factura"
+                            to="/emitidas/factura"
                         >
                             Nueva Factura
                         </NavLink>
@@ -170,7 +170,7 @@ export const FacturasEmitidasScreen = ({history}) => {
             </div>
 
             <NavLink
-                to="/factura"
+                to="/emitidas/factura"
             >
                 <button
                     className="p-0 w-16 h-16 bg-blue-400 rounded-full hover:bg-blue-700 active:shadow-lg mouse shadow transition ease-in duration-200 fixed right-6 bottom-6 z-20 focus:outline-none"

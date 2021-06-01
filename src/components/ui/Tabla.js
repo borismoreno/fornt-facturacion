@@ -10,7 +10,7 @@ export const Tabla = ({titulo, headers = headersInitial, data = initialData, han
         if ( headers && headers.length > 0 ) {
             return headers.map((key, index) => {
                 return <th 
-                            className="px-6 bg-blue-300 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                            className="px-6 bg-blue-200 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
                             key={index}
                         >{key}</th>
             })

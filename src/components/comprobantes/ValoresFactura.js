@@ -69,37 +69,37 @@ export const ValoresFactura = () => {
     }, [detallesFactura, dispatch]);
     return (
         <div className="w-full">
-            { subtotalDoce > 0 && <div className="flex justify-between mb-4">
+            <div className="flex justify-between mb-4">
                 <label className="px-2 font-thin text-base">Subtotal 12%</label>
-                <label className="px-4 font-thin text-base">{ `$ ${subtotalDoce.toFixed(2)}` }</label>
-            </div>}
-            { subtotalCero > 0 && <div className="flex justify-between mb-4">
+                <label className="px-4 font-thin text-xl text-blue-400">{ `$ ${subtotalDoce.toFixed(2)}` }</label>
+            </div>
+            <div className="flex justify-between mb-4">
                 <label className="px-2 font-thin text-base">Subtotal 0%</label>
-                <label className="px-4 font-thin text-base">{ `$ ${subtotalCero.toFixed(2)}` }</label>
-            </div>}
-            { subtotalNoIva > 0 && <div className="flex justify-between mb-4">
+                <label className="px-4 font-thin text-xl text-blue-400">{ `$ ${subtotalCero.toFixed(2)}` }</label>
+            </div>
+            <div className="flex justify-between mb-4">
                 <label className="px-2 font-thin text-base">Subtotal No Objeto IVA</label>
-                <label className="px-4 font-thin text-base">{ `$ ${subtotalNoIva.toFixed(2)}` }</label>
-            </div>}
-            { subtotalExento > 0 && <div className="flex justify-between mb-4">
+                <label className="px-4 font-thin text-xl text-blue-400">{ `$ ${subtotalNoIva.toFixed(2)}` }</label>
+            </div>
+            <div className="flex justify-between mb-4">
                 <label className="px-2 font-thin text-base">Subtotal Excento IVA</label>
-                <label className="px-4 font-thin text-base">{ `$ ${subtotalExento.toFixed(2)}` }</label>
-            </div>}
+                <label className="px-4 font-thin text-xl text-blue-400">{ `$ ${subtotalExento.toFixed(2)}` }</label>
+            </div>
             <div className="flex justify-between mb-4">
                 <label className="px-2 font-thin text-base">Descuento</label>
-                <label className="px-4 font-thin text-base">{ `$ ${totalDescuento.toFixed(2)}` }</label>
+                <label className="px-4 font-thin text-xl text-blue-400">{ `$ ${totalDescuento.toFixed(2)}` }</label>
             </div>
             <div className="flex justify-between mb-4">
                 <label className="px-2 font-thin text-base">Subtotal sin impuestos</label>
-                <label className="px-4 font-thin text-base">{ `$ ${subtotalSinImpuestos.toFixed(2)}` }</label>
+                <label className="px-4 font-thin text-xl text-blue-400">{ `$ ${subtotalSinImpuestos.toFixed(2)}` }</label>
             </div>
             <div className="flex justify-between mb-4">
                 <label className="px-2 font-thin text-base">Valor IVA</label>
-                <label className="px-4 font-thin text-base">{ `$ ${totalIva.toFixed(2)}` }</label>
+                <label className="px-4 font-thin text-xl text-blue-400">{ `$ ${totalIva.toFixed(2)}` }</label>
             </div>
             <div className="flex justify-between mb-4">
                 <label className="px-2 font-normal text-3xl">Valor Total</label>
-                <label className="px-4 font-normal text-3xl">{ `$ ${valorTotal.toFixed(2)}` }</label>
+                <label className="px-4 font-normal text-3xl text-green-500">{ `$ ${valorTotal.toFixed(2)}` }</label>
             </div>
         </div>
     )

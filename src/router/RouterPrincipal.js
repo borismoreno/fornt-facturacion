@@ -15,7 +15,7 @@ export const RouterPrincipal = () => {
                 <div className="px-4 md:px-10 mx-auto w-full mt-4 pb-2">
                     <Switch>
                         <Route exact path='/dashboard' component={ DashboardScreen } />
-                        <Route exact path='/factura' component={ FacturaScreen } />
+                        <Route exact path='/emitidas/factura' component={ FacturaScreen } />
                         <Route exact path='/emitidas' component={ FacturasEmitidasScreen } />
                         <Redirect to='/dashboard' />
                     </Switch>

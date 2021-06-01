@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startObtenerClientes, startBuscarCliente, startLimpiarSeleccion } from '../../actions/clientes';
-import { startObtenerDatosEmpresa } from '../../actions/configuracion';
-import { startActualizarAdicionales, startActualizarDetallesFactura, startActualizarFormasPago, startEmitirFactura, startLimpiarDatosFactura } from '../../actions/factura';
+import { startObtenerDatosEmpresa, startObtenerFormasPago } from '../../actions/configuracion';
+import { startActualizarAdicionales, startActualizarDetallesFactura, startEmitirFactura, startLimpiarDatosFactura } from '../../actions/factura';
 import { calcularImpuestosDetalle } from '../../helpers/calculos';
 import { BuscarCliente } from '../clientes/BuscarCliente';
 import { NuevaFormaPago } from '../modals/NuevaFormaPago';
@@ -14,6 +14,8 @@ import { ValoresFactura } from './ValoresFactura';
 import { startMostrarCargando, startMostrarError } from '../../actions/alerta';
 import { Cargando } from '../ui/Cargando';
 import { ImprimirComprobante } from '../modals/ImprimirComprobante';
+import { NavLink } from 'react-router-dom';
+import { useForm } from '../../hooks/useForm';
 
 const clienteInicial = {
     razonSocial: '',
@@ -36,15 +38,11 @@ const headersAdicional = [
     ''
 ]
 
-const headersFormasPago = [
-    'Forma Pago',
-    'Valor',
-    'Plazo',
-    'Tipo Plazo',
-    ''
-]
-
 export const FacturaScreen = ({history}) => {
+    const [ formValores, handleInputChangeSelect ] = useForm({
+        formaPago: ''
+    });
+    const { formaPago } = formValores;
     const dispatch = useDispatch();
     const wrapperRef = useRef(null);
     const [numeroIdentificacion, setNumeroIdentificacion] = useState('');
@@ -54,14 +52,13 @@ export const FacturaScreen = ({history}) => {
     const [display, setDisplay] = useState(false);
     const [formValues, setFormValues] = useState(clienteInicial);
     const [datosDetalles, setDatosDetalles] = useState([]);
-    const [detalleFormasPago, setDetalleFormasPago] = useState([]);
-    const [subtotalFormaPago, setSubtotalFormaPago] = useState(0.00);
+    const [subtotalFormaPago] = useState(0.00);
     const [valorPendiente, setValorPendiente] = useState(0.00);
     const [fechaEmision, setFechaEmision] = useState(new Date());
     const { clienteSeleccionado } = useSelector(state => state.clientes);
     const { empresaId } = useSelector(state => state.auth);
-    const { empresa } = useSelector(state => state.configuracion);
-    const { detallesFactura, adicionalesFactura, valoresFactura, formasPagoFactura, claveAcceso } = useSelector(state => state.factura);
+    const { empresa, formasPago } = useSelector(state => state.configuracion);
+    const { detallesFactura, adicionalesFactura, valoresFactura, claveAcceso } = useSelector(state => state.factura);
     const { mostrarCargando } = useSelector(state => state.alerta);
     const { razonSocial, direccion, mail } = formValues;
     const { 
@@ -95,22 +92,6 @@ export const FacturaScreen = ({history}) => {
     }, [detallesFactura]);
 
     useEffect(() => {
-        setSubtotalFormaPago(formasPagoFactura.reduce((prev, cur) => {
-            let resultado = prev;
-            resultado = prev + Number(cur.valorPago);
-            return resultado;
-        }, 0));
-        setDetalleFormasPago(formasPagoFactura.map(formaPago => (
-            {
-                formaPago: formaPago.descripcion,
-                valor: formaPago.valorPago,
-                plazo: formaPago.plazo,
-                tipoPlazo: formaPago.tipoPlazo
-            }
-        )));
-    }, [formasPagoFactura]);
-
-    useEffect(() => {
         dispatch(startObtenerClientes());
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -140,6 +121,10 @@ export const FacturaScreen = ({history}) => {
         }
     }, [clienteSeleccionado, setFormValues])
 
+    useEffect(() => {
+        dispatch(startObtenerFormasPago());
+    }, [dispatch])
+
     const handleClickOutside = event => {
         const {current: wrap} = wrapperRef;
         if (wrap && !wrap.contains(event.target)) {
@@ -162,12 +147,6 @@ export const FacturaScreen = ({history}) => {
 
     const handleEliminarAdicional = (index) => {
         dispatch(startActualizarAdicionales(adicionalesFactura.filter((item, i) => {
-            return index !== i
-        })));
-    }
-
-    const handleEliminarFormaPago = (index) => {
-        dispatch(startActualizarFormasPago(formasPagoFactura.filter((item, i) => {
             return index !== i
         })));
     }
@@ -206,13 +185,16 @@ export const FacturaScreen = ({history}) => {
         } else if ( detallesFactura.length === 0 ) {
             dispatch(startMostrarError('No existen detalles a facturar.'));
             return;
-        } else if ( formasPagoFactura.length === 0 ) {
+        } else if ( formaPago === '' ) {
             dispatch(startMostrarError('Debe ingresar la forma de pago.'));
             return;
-        } else if ( Number(valorPendiente) !== 0.00 ) {
-            dispatch(startMostrarError('No coincide valor total con formas de pago.'));
-            return;
         }
+        let formasDePago = [{
+            tipoFormaPago: formaPago,
+            valorPago: valorTotal.toFixed(2),
+            plazo: '0',
+            tipoPlazo: 'DIAS',
+        }]
         let clienteEnviar = clienteSeleccionado;
         clienteEnviar.direccion = direccion;
         clienteEnviar.razonSocial = razonSocial;
@@ -224,7 +206,7 @@ export const FacturaScreen = ({history}) => {
             empresa,
             impuestosDetalle,
             detalles: detallesFactura,
-            formasPago: formasPagoFactura,
+            formasPago: formasDePago,
             datosAdicionales: adicionalesFactura,
             detalleValores: {
                 totalSinImpuestos: subtotalSinImpuestos.toFixed(2),
@@ -245,23 +227,31 @@ export const FacturaScreen = ({history}) => {
         dispatch(startLimpiarSeleccion());
         dispatch(startLimpiarDatosFactura());
     }, [dispatch, empresaId]);
+
+    
     
     return (
         <div
             className="container mx-auto mb-6"
         >
-            <div className="flex justify-between">
-                <h2 className="text-2xl font-bold mb-6 pb-2 tracking-wider uppercase">Factura</h2>
-                <div>
-                    <div className="relative mr-4 inline-block">
-                        {/* <i className="fas fa-print"></i> */}
+            <div className="flex justify-between py-2 px-3 bg-gray-200 rounded-md rounded-b-none">
+                <h2 className="text-2xl font-bold mt-1 tracking-wider uppercase">Factura</h2>
+                <div className="">
+                    <div className="relative inline-block">
+                        <NavLink
+                            className="flex items-center p-2 hover:bg-gray-100 focus:outline-none text-blue-400"
+                            to="/emitidas"
+                        >
+                            <i className="fas fa-arrow-circle-left mr-2"></i>
+                            <p className="">Regresar al listado</p>
+                        </NavLink>
                     </div>
                 </div>
             </div>
 
-            <div className="flex flex-col flex-wrap md:flex-row mb-8 justify-between text-left">
+            <div className="flex flex-col flex-wrap md:flex-row mb-8 justify-between px-4 py-2 border-gray-200 border-l-2 border-b-2 border-r-2 rounded-md rounded-t-none text-left">
                 <div 
-                    className="w-10/12 md:w-5/12 mb-5" 
+                    className="w-10/12 md:w-5/12" 
                 >
                     <div 
                         className="mb-10"
@@ -350,6 +340,23 @@ export const FacturaScreen = ({history}) => {
                             setStartDate={setFechaEmision}
                         />
                     </div>
+                    <div className="mb-10">
+                        <label
+                            htmlFor="formaPago"
+                            className="text-xs font-bold"
+                        >Forma de Pago</label>
+                        <select
+                            className="w-full pb-1 mt-2 text-sm border-b-2 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg"
+                            name="formaPago"
+                            value={formaPago}
+                            onChange={handleInputChangeSelect}
+                        >
+                            <option value=''>--SELECCIONE--</option>
+                            { formasPago && formasPago.map(item => (
+                              <option key={item._id} value={item.codigo}>{item.formaPago}</option>
+                          )) }
+                        </select>
+                    </div>
                 </div>
             </div>
             <div className="border-gray-200 border-2 rounded-md">
@@ -360,7 +367,7 @@ export const FacturaScreen = ({history}) => {
                     handleEliminar={handleEliminarDetalle}
                 />
                 <button
-                    className="flex items-center p-2 hover:bg-gray-100 focus:outline-none"
+                    className="flex items-center p-2 hover:bg-gray-100 focus:outline-none text-blue-400"
                     onClick={() => setMostrarNuevoDetalle(true)}
                 >
                     <i className="fas fa-plus-circle mr-2"></i>
@@ -368,50 +375,34 @@ export const FacturaScreen = ({history}) => {
                 </button>
             </div>
             <div className="flex flex-col flex-wrap md:flex-row mb-8 justify-between text-left mt-4">
-                <div className="w-10/12 md:w-6/12 mb-5 mt-7" >
+                <div className="w-10/12 md:w-6/12 border-gray-200 border-2 rounded-md">
                     <Tabla
                         headers={headersAdicional}
                         data={adicionalesFactura}
                         handleEliminar={handleEliminarAdicional}
                     />
                     <button
-                        className="flex items-center p-2 hover:bg-gray-100 focus:outline-none"
+                        className="flex items-center p-2 hover:bg-gray-100 focus:outline-none text-blue-400"
                         onClick={() => setMostrarNuevoAdicional(true)}
                     >
                         <i className="fas fa-plus-circle mr-2"></i>
                         <p className="">Agregar Valor Adicional</p>
                     </button>
                 </div>
-                <div className="w-10/12 md:w-5/12">
+                <div className="w-10/12 md:w-5/12 border-gray-200 border-2 rounded-md pt-2">
                     <ValoresFactura
                     />
                 </div>
             </div>
-            <div className="flex flex-col flex-wrap md:flex-row mb-8 justify-between text-left mt-4">
-                <div className="border-gray-200 border-2 rounded-md w-10/12 md:w-9/12">
-                    <Tabla 
-                        titulo="Formas de Pago"
-                        data={detalleFormasPago}
-                        headers={headersFormasPago}
-                        handleEliminar={handleEliminarFormaPago}
-                    />
-                    { valorPendiente > 0 && <button
-                        className="flex items-center p-2 hover:bg-gray-100 focus:outline-none"
-                        onClick={() => setMostrarNuevaFormaPago(true)}
-                    >
-                        <i className="fas fa-plus-circle mr-2"></i>
-                        <p className="">Agregar Forma de Pago</p>
-                    </button>}
-                </div>
-                <div className="w-10/12 md:w-2/12">
-                    <button
-                        onClick={handleEmitirFactura} 
-                        className="border-gray-500 border-2 rounded-md p-6 absolute cursor-pointer focus:outline-none hover:bg-gray-300"
-                    >
-                        Emitir Factura
-                    </button>
-                </div>
-
+            <div className="flex justify-center">
+                <button 
+                    className="bg-blue-500 uppercase rounded-3xl py-3 px-8 text-white mr-4 focus:outline-none"
+                    onClick={handleEmitirFactura} 
+                >Enviar</button>
+                <NavLink 
+                    className="bg-red-500 uppercase rounded-3xl py-3 px-8 text-white focus:outline-none"
+                    to="/emitidas"
+                >Cancelar</NavLink>
             </div>
             {
                 mostrarNuevoDetalle && 

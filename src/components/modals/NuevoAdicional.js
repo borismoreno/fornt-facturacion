@@ -13,7 +13,7 @@ export const NuevoAdicional = ({setShowModal}) => {
         },
         validationSchema: Yup.object({
             nombreAdicional: Yup.string()
-                            .min(5, 'El nombre debe tener al menos 5 caracteres.')
+                            .min(3, 'El nombre debe tener al menos 3 caracteres.')
                             .required('El nombre es obligatorio.'),
             valorAdicional: Yup.string()
                             .required('El valor es obligatorio.'),
