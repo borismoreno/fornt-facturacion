@@ -15,6 +15,17 @@ export const startObtenerComprobantesEmitidos = (fechaInicio, fechaFin) => {
     }
 }
 
+export const startObtenerDetallesFactura = (facturaId) => {
+    return async(dispatch) => {
+        const respuesta = await fetchConToken(`comprobante/obtener-detalles/${facturaId}`);
+        const body = await respuesta.json();
+        const { ok, detalles } = body;
+        if (ok) {
+            dispatch(obtenerDetallesComprobante(detalles));
+        }
+    }
+}
+
 export const startObtenerPdf = (claveAcceso) => {
     return async(dispatch) => {
         try {
@@ -182,6 +193,11 @@ export const startAnularComprobante = (claveAcceso) => {
 const obtenerComprobantesEmitidos = (comprobantes) => ({
     type: types.comprobanteObtenerEmitidos,
     payload: comprobantes
+});
+
+const obtenerDetallesComprobante = (detalles) => ({
+    type: types.comprobanteObtenerDetalles,
+    payload: detalles
 });
 
 const iniciarObtenerPdf = () => ({type: types.comprobanteIniciarObtenerPdf});

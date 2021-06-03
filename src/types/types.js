@@ -39,6 +39,7 @@ export const types = {
     facturaObtenerClaveAcceso: '[factura] Obtener clave acceso',
 
     comprobanteObtenerEmitidos: '[comprobante] Obtener comprobantes emitidos',
+    comprobanteObtenerDetalles: '[comprobante] Obtener detalles comprobante',
     comprobanteIniciarObtenerPdf: '[comprobante] Iniciar Obtener PDF',
     comprobanteTerminarObtenerPdf: '[comprobante] Terminar Obtener PDF',
     comprobanteObtenerFechasBusqueda: '[comprobante] Obtener fechas de búsqueda',

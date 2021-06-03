@@ -49,6 +49,7 @@ export const FacturaScreen = ({history}) => {
     const [mostrarNuevoDetalle, setMostrarNuevoDetalle] = useState(false);
     const [mostrarNuevoAdicional, setMostrarNuevoAdicional] = useState(false);
     const [mostrarNuevaFormaPago, setMostrarNuevaFormaPago] = useState(false);
+    const [remarcar, setRemarcar] = useState(false);
     const [display, setDisplay] = useState(false);
     const [formValues, setFormValues] = useState(clienteInicial);
     const [datosDetalles, setDatosDetalles] = useState([]);
@@ -186,9 +187,11 @@ export const FacturaScreen = ({history}) => {
             dispatch(startMostrarError('No existen detalles a facturar.'));
             return;
         } else if ( formaPago === '' ) {
-            dispatch(startMostrarError('Debe ingresar la forma de pago.'));
+            dispatch(startMostrarError('Seleccione la forma de pago.'));
+            setRemarcar(true);
             return;
         }
+        setRemarcar(false);
         let formasDePago = [{
             tipoFormaPago: formaPago,
             valorPago: valorTotal.toFixed(2),
@@ -228,8 +231,6 @@ export const FacturaScreen = ({history}) => {
         dispatch(startLimpiarDatosFactura());
     }, [dispatch, empresaId]);
 
-    
-    
     return (
         <div
             className="container mx-auto mb-6"
@@ -346,7 +347,9 @@ export const FacturaScreen = ({history}) => {
                             className="text-xs font-bold"
                         >Forma de Pago</label>
                         <select
-                            className="w-full pb-1 mt-2 text-sm border-b-2 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg"
+                            className={"w-full pb-1 mt-2 text-sm border-b-2 border-gray-200 focus:outline-none focus:border-indigo-300 focus:shadow-lg" + 
+                                ((remarcar && formaPago === '') ? ' border-2 border-red-400' : '')
+                            }
                             name="formaPago"
                             value={formaPago}
                             onChange={handleInputChangeSelect}

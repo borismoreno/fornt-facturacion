@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { startAnularComprobante, startObtenerComprobantesEmitidos, startOcultarAnular, startOcultarReprocesar, startReprocesarComprobante } from '../../actions/comprobante';
-import { Tabla } from '../ui/Tabla';
 import { Pagination } from '../ui/Pagination';
 import { Cargando } from '../ui/Cargando';
 import { MenuFechas } from '../ui/MenuFechas';
@@ -13,15 +12,7 @@ import { ReprocesarComprobante } from '../modals/ReprocesarComprobante';
 import { ImprimirComprobante } from '../modals/ImprimirComprobante';
 import { startMostrarCargando } from '../../actions/ui';
 import { ExportarExcel } from '../ui/ExportarExcel';
-
-const headersEmitidos = [
-    'Cliente',
-    'Número',
-    'Fecha',
-    'Valor',
-    'Estado',
-    ''
-]
+import { TablaFacturas } from '../comprobantes/TablaFacturas';
 
 export const FacturasEmitidasScreen = ({history}) => {
     const dispatch = useDispatch();
@@ -181,11 +172,15 @@ export const FacturasEmitidasScreen = ({history}) => {
             {
                 currentRows.length > 0 ? (
                     <div>
-                <Tabla
+                        <TablaFacturas 
+                            data={currentRows}
+                            acciones={true}
+                        />
+                {/* <Tabla
                     data={currentRows}
                     headers={headersEmitidos}
                     acciones={true}
-                />
+                /> */}
                 {
                     emitidos.length > 10 && <Pagination
                         rowsPerPage={rowsPerPage}
