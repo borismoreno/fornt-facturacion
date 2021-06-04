@@ -1,26 +1,60 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import { startObtenerDetallesFactura } from '../../actions/comprobante';
+import { startObtenerAutorizacionComprobante, startObtenerDetallesFactura, startObtenerError, startReenviarMail } from '../../actions/comprobante';
+import { Cargando } from '../ui/Cargando';
+import { MenuDescargar } from './MenuDescargar';
+import { ReenvioMail } from '../modals/ReenvioMail';
+import { NuevoPago } from '../modals/NuevoPago';
+import { startObtenerPagosFactura } from '../../actions/factura';
+import { MenuAccionesFactura } from './MenuAccionesFactura';
 
 export const FacturaDetalleScreen = () => {
-    const { comprobantesEmitidos, detallesComprobante } = useSelector(state => state.comprobante);
+    const { comprobantesEmitidos, detallesComprobante, descargandoPdf, errorDevuelta, autorizacionComprobante, claveReenvio } = useSelector(state => state.comprobante);
+    const { pagosFactura } = useSelector(state => state.factura);
+    const { mostrarCargando } = useSelector(state => state.alerta);
+    const [ mostrarPago, setMostrarPago ] = useState(false);
+    const [ totalPagos, setTotalPagos ] = useState(0);
+    const [ pendientePago, setPendientePago ] = useState(0);
     const dispatch = useDispatch();
     const params = useParams();
     const { id } = params;
     const elemento = comprobantesEmitidos.find(item => item._id === id);
     useEffect(() => {
+        const procesarPagos = () => {
+            const sumaPagos = pagosFactura.reduce((prev, cur) => {
+                return prev + Number(cur.valor);
+            }, 0);
+            const sumaPendiente = Number(elemento.importeTotal) - sumaPagos;
+            setTotalPagos(sumaPagos);
+            setPendientePago(sumaPendiente);
+        }
+        procesarPagos();
+    }, [pagosFactura, elemento])
+    useEffect(() => {
         dispatch(startObtenerDetallesFactura(id));
-    }, [dispatch, id]);
+        dispatch(startObtenerPagosFactura(id));
+        if (elemento) {
+            if (elemento.estadoComprobante === 'DEV') {
+                dispatch(startObtenerError(id));
+            } else {
+                dispatch(startObtenerAutorizacionComprobante(id));
+            }
+        }
+    }, [dispatch, id, elemento]);
     if (!elemento) {
         return <p>Error al consultar el comprobante</p>
     }
-
     const obtenerFecha = (fecha) => {
         const division = fecha.split('/');
+        
+        return `${obtenerMes(division[1])} ${division[0]}, ${division[2]}`;
+    }
+
+    const obtenerMes = (mesNumero) => {
         let mes = '';
-        switch (division[1]) {
+        switch (mesNumero) {
             case '01':
                 mes = 'Enero'
                 break;
@@ -60,7 +94,7 @@ export const FacturaDetalleScreen = () => {
             default:
                 break;
         }
-        return `${mes} ${division[0]}, ${division[2]}`;
+        return mes;
     }
     const obtenerValorEstado = (valor) => {
         let estado = '';
@@ -93,113 +127,257 @@ export const FacturaDetalleScreen = () => {
     }
     const estadoCmp = obtenerValorEstado(elemento.estadoComprobante);
     const fechaDescripcion = obtenerFecha(elemento.fechaEmision);
-    
+
+    const cambiarFecha = (fecha, incluirHora = false) => {
+        const auxiliar = fecha.split('T');
+        const division = auxiliar[0].split('-');
+        const hora = auxiliar[1].split(':');
+        if (incluirHora) {
+            return `${obtenerMes(division[1])} ${division[2]}, ${division[0]}, ${hora[0]}:${hora[1]}`
+        } else {
+            return `${obtenerMes(division[1])} ${division[2]}, ${division[0]}`
+        }
+    }
+
+    const handleReenvioMail = (claveAcceso) => {
+        dispatch(startReenviarMail(claveAcceso));
+    }
+
     return (
-        <div
-            className="container mx-auto mb-6 border-2 rounded-t-md pb-4"
-        >
-            <div className="flex justify-end py-2 px-3 bg-gray-200 rounded-md rounded-b-none">
-                <div className="">
-                    <div className="flex">
-                        {/* <NavLink
-                            className="flex items-center p-2 hover:bg-gray-100 focus:outline-none text-blue-400"
-                            to="/emitidas"
-                        >
-                            <i className="fas fa-arrow-circle-left mr-2"></i>
-                            <p className="hidden md:block">Descargar</p>
-                        </NavLink> */}
+        <>
+            <div
+                className="container mx-auto mb-6 border-2 rounded-t-md pb-4"
+            >
+                <div className="flex justify-between py-2 px-3 bg-gray-200 rounded-md rounded-b-none">
+                    <div className=''>
                         <NavLink
-                            className="flex items-center p-2 hover:bg-gray-100 focus:outline-none text-blue-400"
+                            className="flex items-center p-2 rounded-md border border-gray-400 shadow-md hover:bg-gray-100 focus:outline-none text-gray-900"
                             to="/emitidas"
                         >
-                            <i className="fas fa-arrow-circle-left mr-2"></i>
+                            <i className="fas fa-arrow-circle-left md:mr-2"></i>
                             <p className="hidden md:block">Regresar</p>
                         </NavLink>
                     </div>
+                    <div className='justify-end'>
+                        <div className="flex">
+                            {
+                                estadoCmp === 'PROCESADA' &&
+                                <>
+                                    <button 
+                                        type="button" 
+                                        className="flex items-center p-2 rounded-md border border-gray-400 shadow-md mr-2 hover:bg-gray-100 focus:outline-none text-gray-900"
+                                        onClick={() => setMostrarPago(true)}
+                                    >
+                                        <i className="fas fa-dollar-sign md:mr-2"></i>
+                                        <p className="hidden md:block">Registrar Pago</p>
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        className="flex items-center p-2 rounded-md border border-gray-400 shadow-md mr-2 hover:bg-gray-100 focus:outline-none text-gray-900"
+                                        onClick={() => handleReenvioMail(elemento.claveAcceso)}
+                                    >
+                                        <i className="far fa-envelope md:mr-2"></i>
+                                        <p className="hidden md:block">Enviar</p>
+                                    </button>
+                                </>
+                            }
+                            <MenuDescargar
+                                claveAcceso={elemento.claveAcceso}
+                                tieneXml={elemento.pathXml ? true: false}
+                            />
+                            <MenuAccionesFactura
+                                
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className='pr-3'>
+                    <div className='flex justify-end mt-3'>
+                        <p className={
+                                'py-2 px-4 text-sm font-medium border-2 rounded-md ' + 
+                                ((estadoCmp === 'PROCESADA') ? ' border-green-400 text-green-400' : ' border-red-400 text-red-400')
+                            }>{estadoCmp}</p>
+                    </div>
+                    <div className='flex justify-end mt-3'>
+                        <p className='text-2xl font-light'>Factura {elemento.estab}-{elemento.ptoEmi}-{elemento.secuencial}</p>
+                    </div>
+                    <div className='flex justify-end mt-3'>
+                        <p className='text-2xl font-thin'>{fechaDescripcion}</p>
+                    </div>
+                </div>
+                {
+                    errorDevuelta && 
+                    <div className='border-2 border-red-100 rounded-md p-2 mt-4 shadow-md mb-4 bg-gray-100 mx-4'>
+                        <div>
+                            <p className='text-xl font-light mb-2 text-red-500'>Mensaje devuelto por el SRI</p>
+                            <p className='text-sm font-light py-2'><strong>Código: </strong>{errorDevuelta.identificador}</p>
+                            <p className='text-base font-light'>{errorDevuelta.mensaje}</p>
+                            {errorDevuelta.informacionAdicional !== '' && <p className='text-base font-light pt-2'>{errorDevuelta.informacionAdicional}</p>}
+                        </div>
+                    </div>
+                }
+                <div className='flex flex-col flex-wrap lg:flex-row content-center lg:justify-between mt-3 lg:px-2'>
+                    <div className='w-11/12 lg:w-5/12'>
+                        <p className='capitalize text-lg font-light text-gray-800'>{elemento.razonSocial.toLowerCase()}</p>
+                        <p className='text-sm font-light text-gray-600 mt-4'>RUC {elemento.ruc}</p>
+                        <p className='text-sm font-light text-gray-600'>{elemento.dirEstablecimiento}</p>
+                    </div>
+                    <hr className='mt-4 border-gray-400 lg:hidden' />
+                    <div className='mt-4 lg:mt-0 w-11/12 lg:w-6/12'>
+                        { autorizacionComprobante && <div>
+                            <p className='capitalize text-lg font-light text-gray-800'>Autorización</p>
+                            <p className='capitalize text-sm font-light text-gray-800 mt-4'>Número</p>
+                            <p className='text-xs xl:text-sm font-light text-gray-600 mt-1'>{autorizacionComprobante.numeroAutorizacion}</p>
+                            <p className='capitalize text-sm font-light text-gray-800 mt-2'>Fecha</p>
+                            <p className='text-xs xl:text-sm font-light text-gray-600 mt-1'>{cambiarFecha(autorizacionComprobante.fechaAutorizacion, true)}</p>
+                        </div>}
+                    </div>
+                </div>
+                <hr className='mt-4 mx-2 border-gray-400' />
+                <div className='flex flex-col mt-4 px-2'>
+                    <p className='capitalize text-lg font-light text-blue-400'>{elemento.razonSocialComprador.toLowerCase()}</p>
+                    <p className='text-sm font-light text-gray-600 mt-2'>Cedula {elemento.identificacionComprador}</p>
+                    <p className='text-sm font-light text-gray-600'>{elemento.cliente.mail}</p>
+                    <p className='text-sm font-light text-gray-600'>{elemento.cliente.direccion}</p>
+                    <p className='text-sm font-light text-gray-600'>Telf. {elemento.cliente.telefono}</p>
+                </div>
+                <hr className='mt-4 mx-2 border-gray-400' />
+                <div className="block w-full overflow-x-auto px-2 mt-4">
+                    {/* <table className="w-full mt-4"> */}
+                    <table className="items-center w-full border-collapse mt-4">
+                        <thead>
+                            <tr>
+                                <th
+                                    className='md:w-2/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
+                                >Descripción</th>
+                                <th
+                                    className='md:w-1/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
+                                >Cantidad</th>
+                                <th
+                                    className='md:w-1/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
+                                >Precio Unitario</th>
+                                <th
+                                    className='md:w-1/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
+                                >Descuento</th>
+                                <th
+                                    className='md:w-1/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
+                                >Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody className='text-gray-600 text-sm font-light'>
+                            {
+                                detallesComprobante.map(detalle => {
+                                    return <tr key={detalle._id} className='border-b border-gray-200 hover:border-gray-100'>
+                                        <td
+                                            className='py-3 px-6 text-left'
+                                        >
+                                            <div>
+                                                {detalle.descripcion}
+                                            </div>
+                                        </td>
+                                        <td
+                                            className='text-center'
+                                        >{detalle.cantidad}</td>
+                                        <td
+                                            className='text-center'
+                                        >$ {detalle.precioUnitario}</td>
+                                        <td
+                                            className='text-center'
+                                        >$ {detalle.descuento}</td>
+                                        <td
+                                            className='text-center'
+                                        >$ {detalle.totalSinImpuesto}</td>
+                                    </tr>
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div className='flex'>
+                    <div className='w-full md:w-1/2 flex justify-between p-2'>
+                        <div className='w-full'>
+                            <p className='text-lg font-light p-2'>Subtotal</p>
+                            <p className='text-lg font-light p-2'>Valor IVA</p>
+                            <p className='text-3xl font-light p-2'>Total</p>
+                        </div>
+                        <div className='w-full'>
+                            <p className='text-lg font-light p-2 text-right'>$ {elemento.totalSinImpuestos}</p>
+                            <p className='text-lg font-light p-2 text-right'>$ {elemento.totalIva}</p>
+                            <p className='text-3xl font-light p-2 text-right'>$ {elemento.importeTotal}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                {
+                    (descargandoPdf || mostrarCargando) && <Cargando />
+                }
+                {
+                    claveReenvio && <ReenvioMail claveAcceso={claveReenvio} />
+                }
+                {
+                    mostrarPago && 
+                        <NuevoPago 
+                            valorInicial={pendientePago} 
+                            setShowModal={setMostrarPago}
+                            facturaId={elemento._id}
+                        />
+                }
+            </div>
+            <div className='flex flex-col border-2 mb-10'>
+                <div className='mt-5 ml-5'>
+                    <p className='text-gray-500 text-lg'>Saldos</p>
+                </div>
+                <div className='flex flex-col md:flex-row p-6 justify-around'>
+                    <div className='w-full flex flex-col items-center my-10'>
+                        <p className='text-3xl text-gray-600 font-light'>${ totalPagos.toFixed(2) }</p>
+                        <p className='text-xl text-gray-500'>TOTAL PAGADO</p>
+                    </div>
+                    <div className='w-full flex flex-col items-center my-10'>
+                        <p className='text-3xl text-gray-600 font-light'>${ pendientePago.toFixed(2) }</p>
+                        <p className='text-xl text-gray-500'>SALDO PENDIENTE</p>
+                    </div>
+                    
+                </div>
+                <div className="block w-full overflow-x-auto px-2 mt-4">
+                    {/* <table className="w-full mt-4"> */}
+                    <table className="items-center w-full border-collapse mt-4 mb-4">
+                        <thead>
+                            <tr>
+                                <th
+                                    className='md:w-2/4 border-b-2 border-gray-300 py-2 font-light text-xl text-gray-800'
+                                >Forma Pago</th>
+                                <th
+                                    className='md:w-1/4 border-b-2 border-gray-300 py-2 font-light text-xl text-gray-800'
+                                >Fecha</th>
+                                <th
+                                    className='md:w-1/4 border-b-2 border-gray-300 py-2 font-light text-xl text-gray-800'
+                                >Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody className='text-gray-600 text-sm font-light'>
+                            {
+                                pagosFactura.map(pago => {
+                                    return <tr key={pago._id} className='border-b border-gray-200 hover:border-gray-100'>
+                                        <td
+                                            className='py-3 px-6 text-center'
+                                        >
+                                            <div>
+                                                {pago.formaPagoDescripcion}
+                                            </div>
+                                        </td>
+                                        <td
+                                            className='text-center'
+                                        >{ cambiarFecha(pago.fechaPago, false)}</td>
+                                        <td
+                                            className='text-center'
+                                        >${Number(pago.valor).toFixed(2)}</td>
+                                    </tr>
+                                })
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div className='pr-3'>
-                <div className='flex justify-end mt-3'>
-                    <p className={
-                            'py-2 px-4 text-sm font-medium border-2 ' + 
-                            ((estadoCmp === 'PROCESADA') ? ' border-green-400 text-green-400' : ' border-red-400 text-red-400')
-                        }>{estadoCmp}</p>
-                </div>
-                <div className='flex justify-end mt-3'>
-                    <p className='text-2xl font-light'>Factura {elemento.estab}-{elemento.ptoEmi}-{elemento.secuencial}</p>
-                </div>
-                <div className='flex justify-end mt-3'>
-                    <p className='text-2xl font-thin'>{fechaDescripcion}</p>
-                </div>
-            </div>
-            <div className='flex flex-col flex-wrap lg:flex-row content-center lg:justify-between mt-3 lg:px-2'>
-                <div className='w-11/12 lg:w-5/12'>
-                    <p className='capitalize text-lg font-light text-gray-800'>{elemento.razonSocial.toLowerCase()}</p>
-                    <p className='text-sm font-light text-gray-600 mt-4'>RUC {elemento.ruc}</p>
-                    <p className='text-sm font-light text-gray-600'>{elemento.dirEstablecimiento}</p>
-                </div>
-                <hr className='mt-4 border-gray-400 lg:hidden' />
-                <div className='mt-4 lg:mt-0 w-11/12 lg:w-6/12'>
-                    <p className='capitalize text-lg font-light text-gray-800'>Autorización</p>
-                    {/* <p className='text-sm font-light text-gray-600 mt-4'>Número</p> */}
-                    <p className='text-xs xl:text-sm font-light text-gray-600 mt-1'>{elemento.claveAcceso}</p>
-                </div>
-            </div>
-            <hr className='mt-4 mx-2 border-gray-400' />
-            <div className='flex flex-col mt-4 px-2'>
-                <p className='capitalize text-lg font-light text-blue-400'>{elemento.razonSocialComprador.toLowerCase()}</p>
-                <p className='text-sm font-light text-gray-600 mt-2'>Cedula {elemento.identificacionComprador}</p>
-                <p className='text-sm font-light text-gray-600'>{elemento.cliente.mail}</p>
-                <p className='text-sm font-light text-gray-600'>{elemento.cliente.direccion}</p>
-                <p className='text-sm font-light text-gray-600'>Telf. {elemento.cliente.telefono}</p>
-            </div>
-            <hr className='mt-4 mx-2 border-gray-400' />
-            <div className="block w-full overflow-x-auto px-2 mt-4">
-                <table className="table-fixed w-full mt-4">
-                    <thead>
-                        <tr>
-                            <th
-                                className='w-2/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
-                            >Descripción</th>
-                            <th
-                                className='w-1/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
-                            >Cantidad</th>
-                            <th
-                                className='w-1/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
-                            >Precio Unitario</th>
-                            <th
-                                className='w-1/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
-                            >Descuento</th>
-                            <th
-                                className='w-1/6 border-b-2 border-gray-300 py-2 font-light text-gray-900'
-                            >Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            detallesComprobante.map(detalle => {
-                                return <tr key={detalle._id} className='p-3'>
-                                    <td
-                                        className=' font-light text-gray-600 text-sm'
-                                    >{detalle.descripcion}</td>
-                                    <td
-                                        className='text-center font-light text-gray-600 text-sm'
-                                    >{detalle.cantidad}</td>
-                                    <td
-                                        className='text-center font-light text-gray-600 text-sm'
-                                    >{detalle.precioUnitario}</td>
-                                    <td
-                                        className='text-center font-light text-gray-600 text-sm'
-                                    >{detalle.descuento}</td>
-                                    <td
-                                        className='text-center font-light text-gray-600 text-sm'
-                                    >{detalle.totalSinImpuesto}</td>
-                                </tr>
-                            })
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        </>
     )
 }

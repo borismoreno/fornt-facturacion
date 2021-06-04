@@ -1,6 +1,6 @@
 import { fetchConToken } from '../helpers/fetch';
 import { types } from '../types/types';
-import { startOcultarCargando } from './alerta';
+import { startOcultarCargandoAlerta } from './alerta';
 import { startObtenerDatosEmpresa } from './configuracion';
 
 export const startAgregarDetalle = (detalle) => {
@@ -106,7 +106,7 @@ export const startEmitirFactura = (envioFactura) => {
             const respuesta = await fetchConToken('comprobante/v2', envioFactura, 'POST');
             const body = await respuesta.json();
             if (body.ok) {
-                dispatch(startOcultarCargando());
+                dispatch(startOcultarCargandoAlerta());
                 dispatch(startObtenerClaveAcceso(body.claveAcceso));
                 dispatch(startObtenerDatosEmpresa(empresa._id));
             }
@@ -115,3 +115,36 @@ export const startEmitirFactura = (envioFactura) => {
         }
     }
 }
+
+export const startRegistrarPago = (pagoFactura) => {
+    return async(dispatch) => {
+        try {
+            const respuesta = await fetchConToken('comprobante/registrar-pago', pagoFactura, 'POST');
+            const body = await respuesta.json();
+            if (body.ok) {
+                dispatch(obtenerPagosFactura(body.pagos))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const startObtenerPagosFactura = (facturaId) => {
+    return async(dispatch) => {
+        try {
+            const respuesta = await fetchConToken(`comprobante/obtener-pagos/${facturaId}`);
+            const body = await respuesta.json();
+            if (body.ok) {
+                dispatch(obtenerPagosFactura(body.pagos))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const obtenerPagosFactura = (pagosFactura) => ({
+    type: types.facturaObtenerPagos,
+    payload: pagosFactura
+})

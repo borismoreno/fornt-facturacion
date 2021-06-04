@@ -15,13 +15,13 @@ export const startOcultarError = () => {
     }
 }
 
-export const startMostrarCargando = () => {
+export const startMostrarCargandoAlerta = () => {
     return (dispatch) => {
         dispatch(mostrarCargando());
     }
 }
 
-export const startOcultarCargando = () => {
+export const startOcultarCargandoAlerta = () => {
     return (dispatch) => {
         dispatch(ocultarCargando());
     }

@@ -14,6 +14,7 @@ const initialState = {
         totalIva: 0, 
         valorTotal: 0
     },
+    pagosFactura: []
 }
 
 export const facturaReducer = (state = initialState, action) =>{
@@ -66,6 +67,11 @@ export const facturaReducer = (state = initialState, action) =>{
             return {
                 ...state,
                 claveAcceso: action.payload
+            }
+        case types.facturaObtenerPagos:
+            return {
+                ...state,
+                pagosFactura: action.payload
             }
         default:
             return state;

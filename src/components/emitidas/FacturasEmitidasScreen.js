@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { startAnularComprobante, startObtenerComprobantesEmitidos, startOcultarAnular, startOcultarReprocesar, startReprocesarComprobante } from '../../actions/comprobante';
+import { startAnularComprobante, startLimpiarAutorizacion, startLimpiarError, startObtenerComprobantesEmitidos, startOcultarAnular, startOcultarReprocesar, startReprocesarComprobante } from '../../actions/comprobante';
 import { Pagination } from '../ui/Pagination';
 import { Cargando } from '../ui/Cargando';
 import { MenuFechas } from '../ui/MenuFechas';
 import { ComprobanteVacio } from '../comprobantes/ComprobanteVacio';
-import { ErroresComprobante } from '../modals/ErroresComprobante';
 import { ReenvioMail } from '../modals/ReenvioMail';
 import { ReprocesarComprobante } from '../modals/ReprocesarComprobante';
 import { ImprimirComprobante } from '../modals/ImprimirComprobante';
@@ -20,12 +19,16 @@ export const FacturasEmitidasScreen = ({history}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [datosExcel, setDatosExcel] = useState([]);
-    const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin, errorDevuelta, claveReenvio, claveReprocesar, claveAnular } = useSelector(state => state.comprobante);
+    const { comprobantesEmitidos, descargandoPdf, fechaInicio, fechaFin, claveReenvio, claveReprocesar, claveAnular } = useSelector(state => state.comprobante);
     const { claveAcceso } = useSelector(state => state.factura);
     const { cargando } = useSelector(state => state.ui);
     useEffect(() => {
         dispatch(startObtenerComprobantesEmitidos(fechaInicio, fechaFin));
     }, [dispatch, fechaInicio, fechaFin])
+    useEffect(() => {
+        dispatch(startLimpiarError());
+        dispatch(startLimpiarAutorizacion());
+    }, [dispatch])
     useEffect(() => {
         const obtenerEmitidos = () => {
             setCurrentPage(1);
@@ -196,9 +199,9 @@ export const FacturasEmitidasScreen = ({history}) => {
             {
                 descargandoPdf && <Cargando />
             }
-            {
+            {/* {
                 errorDevuelta && <ErroresComprobante />
-            }
+            } */}
             {
                 claveReenvio && <ReenvioMail claveAcceso={claveReenvio} />
             }

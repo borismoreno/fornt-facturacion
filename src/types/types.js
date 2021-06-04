@@ -37,6 +37,7 @@ export const types = {
     facturaActualizarAdicionales: '[factura] Actualizar Datos Adicionales',
     facturaActualizarFormasPago: '[factura] Actualizar Formas Pago',
     facturaObtenerClaveAcceso: '[factura] Obtener clave acceso',
+    facturaObtenerPagos: '[factura] Obtener pagos',
 
     comprobanteObtenerEmitidos: '[comprobante] Obtener comprobantes emitidos',
     comprobanteObtenerDetalles: '[comprobante] Obtener detalles comprobante',
@@ -44,6 +45,8 @@ export const types = {
     comprobanteTerminarObtenerPdf: '[comprobante] Terminar Obtener PDF',
     comprobanteObtenerFechasBusqueda: '[comprobante] Obtener fechas de búsqueda',
     comprobanteObtenerError: '[comprobante] Obtener error comprobante',
+    comprobanteObtenerAutorizacion: '[comprobante] Obtener autorizacion comprobante',
+    comprobanteLimpiarAutorizacion: '[comprobante] Limpiar autorizacion comprobante',
     comprobanteLimpiarError: '[comprobante] Limpiar error comprobante',
     comprobanteIniciarReenvioMail: '[comprobante] Iniciar reenvio mail',
     comprobanteTerminarReenvioMail: '[comprobante] Terminar reenvio mail',

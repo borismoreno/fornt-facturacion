@@ -11,7 +11,7 @@ import { NuevoDetalle } from '../modals/NuevoDetalle';
 import { SeleccionFecha } from '../ui/SeleccionFecha';
 import { Tabla } from '../ui/Tabla';
 import { ValoresFactura } from './ValoresFactura';
-import { startMostrarCargando, startMostrarError } from '../../actions/alerta';
+import { startMostrarCargandoAlerta, startMostrarError } from '../../actions/alerta';
 import { Cargando } from '../ui/Cargando';
 import { ImprimirComprobante } from '../modals/ImprimirComprobante';
 import { NavLink } from 'react-router-dom';
@@ -202,7 +202,7 @@ export const FacturaScreen = ({history}) => {
         clienteEnviar.direccion = direccion;
         clienteEnviar.razonSocial = razonSocial;
         clienteEnviar.mail = mail;
-        dispatch(startMostrarCargando());
+        dispatch(startMostrarCargandoAlerta());
         dispatch(startEmitirFactura({
             cliente: clienteEnviar,
             fechaEmision: fechaEnvio,

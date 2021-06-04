@@ -2,11 +2,12 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { validarEmail } from '../../helpers/validaciones';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { startReenvio, terminarReenviarMail } from '../../actions/comprobante';
 
 export const ReenvioMail = ({claveAcceso}) => {
     const dispatch = useDispatch();
+    const { mostrarCargando } = useSelector(state => state.alerta);
     const handleCerrar = () => {
         dispatch(terminarReenviarMail());
     }
@@ -41,7 +42,7 @@ export const ReenvioMail = ({claveAcceso}) => {
     return (
         <>
             <div 
-                className="justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                className={`justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 ${mostrarCargando? 'z-40': 'z-50'} outline-none focus:outline-none`}
             >
                 <div className="relative w-10/12 md:w-8/12 lg:w-5/12 my-6 pb-2 mx-auto max-w-3xl">
                     {/*content*/}

@@ -17,6 +17,7 @@ const initialState = {
     claveReprocesar: null,
     claveAnular: null,
     detallesComprobante: [],
+    autorizacionComprobante: null,
 }
 
 export const comprobanteReducer = (state = initialState, action) => {
@@ -93,6 +94,16 @@ export const comprobanteReducer = (state = initialState, action) => {
             return {
                 ...state,
                 detallesComprobante: action.payload
+            }
+        case types.comprobanteObtenerAutorizacion:
+            return {
+                ...state,
+                autorizacionComprobante: action.payload
+            }
+        case types.comprobanteLimpiarAutorizacion:
+            return {
+                ...state,
+                autorizacionComprobante: null
             }
         default:
             return state;

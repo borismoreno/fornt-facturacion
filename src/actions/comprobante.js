@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import { types } from '../types/types';
 import { startObtenerClaveAcceso } from './factura';
 import { startOcultarCargando } from './ui';
-import { startMostrarError } from './alerta';
+import { startMostrarCargandoAlerta, startMostrarError, startOcultarCargandoAlerta } from './alerta';
 
 export const startObtenerComprobantesEmitidos = (fechaInicio, fechaFin) => {
     return async(dispatch) => {
@@ -41,6 +41,21 @@ export const startObtenerPdf = (claveAcceso) => {
     }
 }
 
+export const startObtenerXml = (claveAcceso) => {
+    return async(dispatch) => {
+        try {
+            dispatch(iniciarObtenerPdf());
+            const respuesta = await fetchConToken(`comprobante/obtener-xml/${claveAcceso}`);
+            const body = await respuesta.blob();
+            saveAs(body, claveAcceso);
+            dispatch(terminarObtenerPdf());
+        } catch (error) {
+            console.log(error);        
+            dispatch(terminarObtenerPdf());
+        }
+    }
+}
+
 export const startObtenerFechas = (fechaInicio, fechaFin) => {
     return async(dispatch) => {
         dispatch(obtenerFechas({fechaInicio, fechaFin}));
@@ -57,9 +72,25 @@ export const startObtenerError = (facturaId) => {
     }
 }
 
+export const startObtenerAutorizacionComprobante = (facturaId) => {
+    return async(dispatch) => {
+        const respuesta = await fetchConToken(`comprobante/obtener-autorizacion/${facturaId}`);
+        const body = await respuesta.json();
+        if ( body.ok ) {
+            dispatch(obtenerAutorizacion(body.autorizacionComprobante));
+        }
+    }
+}
+
 export const startLimpiarError = () => {
     return async(dispatch) => {
         dispatch(limpiarError());
+    }
+}
+
+export const startLimpiarAutorizacion = () => {
+    return async(dispatch) => {
+        dispatch(limpiarAutorizacion());
     }
 }
 
@@ -78,6 +109,7 @@ export const terminarReenviarMail = () => {
 export const startReenvio = (datos) => {
     return async(dispatch) => {
         try {
+            dispatch(startMostrarCargandoAlerta());
             const respuesta = await fetchConToken('comprobante/reenvio-mail', datos, 'POST');
             const body = await respuesta.json();
             if (body.ok) {
@@ -86,6 +118,7 @@ export const startReenvio = (datos) => {
                 dispatch(startMostrarError('Hubo un error al enviar el mail.'));
             }
             dispatch(limpiarReenvioMail());
+            dispatch(startOcultarCargandoAlerta());
         } catch (error) {
             console.log(error);
         }
@@ -206,6 +239,8 @@ const terminarObtenerPdf = () => ({type: types.comprobanteTerminarObtenerPdf});
 
 const limpiarError = () => ({type: types.comprobanteLimpiarError});
 
+const limpiarAutorizacion = () => ({type: types.comprobanteLimpiarAutorizacion});
+
 const obtenerFechas = (fechas) => ({
     type: types.comprobanteObtenerFechasBusqueda,
     payload: fechas
@@ -214,6 +249,11 @@ const obtenerFechas = (fechas) => ({
 const obtenerError = (error) => ({
     type: types.comprobanteObtenerError,
     payload: error
+});
+
+const obtenerAutorizacion = (autorizacion) => ({
+    type: types.comprobanteObtenerAutorizacion,
+    payload: autorizacion
 });
 
 const reenviarMail = (claveAcceso) => ({

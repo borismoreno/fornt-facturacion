@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { startEnviarMail, startObtenerAutorizacion, startObtenerError, startObtenerPdf, startPresentarAnular, startPresentarReprocesar, startReenviarMail } from '../../actions/comprobante';
+import { startEnviarMail, startObtenerAutorizacion, startObtenerPdf, startPresentarAnular, startPresentarReprocesar, startReenviarMail } from '../../actions/comprobante';
 import { startMostrarCargando } from '../../actions/ui';
 
-export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
+export const MenuAcciones = ({claveAcceso, estado}) => {
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
     const handleDescargarPdf = () => {
@@ -16,9 +16,9 @@ export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
             setOpen(false);
         }, 200);
     }
-    const handleMostrarErrores = () => {
-        dispatch(startObtenerError(facturaId));
-    }
+    // const handleMostrarErrores = () => {
+    //     dispatch(startObtenerError(facturaId));
+    // }
 
     const handleReenvioMail = () => {
         dispatch(startReenviarMail(claveAcceso));
@@ -83,10 +83,10 @@ export const MenuAcciones = ({claveAcceso, estado, facturaId}) => {
                         className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'PROCESADA') ? 'hidden' : null}`}
                         onClick={handleAnularComprobante}
                     ><i className="fas fa-exclamation-circle"></i><span className="ml-4">Marcar como anulada</span></button>
-                    <button 
+                    {/* <button 
                         className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'DEVUELTA') ? 'hidden' : null}`}
                         onClick={handleMostrarErrores}
-                    ><i className="fas fa-times"></i><span className="ml-4">Ver errores</span></button>
+                    ><i className="fas fa-times"></i><span className="ml-4">Ver errores</span></button> */}
                     <button 
                         className={`w-full px-4 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer disabled:opacity-20 ${(estado !== 'RECIBIDA') ? 'hidden' : null}`}
                         onClick={handleObtenerAutorizacion}
