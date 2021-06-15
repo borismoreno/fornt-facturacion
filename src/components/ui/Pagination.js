@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Pagination = ({rowsPerPage, totalRows, currentPage, setCurrentPage, setRowsPerPage}) => {
+export const Pagination = ({rowsPerPage, totalRows, currentPage, setCurrentPage, setRowsPerPage, mostrarCombo = true}) => {
     const pageNumbers = [];
     let canNextPage = true;
     let canPreviousPage = true;
@@ -20,27 +20,7 @@ export const Pagination = ({rowsPerPage, totalRows, currentPage, setCurrentPage,
                     {currentPage} de {pageNumbers.length}
                 </strong>{' '}
             </span>
-            {/* <span>
-                | Ir a página: {' '}
-                <input 
-                    type='number' 
-                    defaultValue={currentPage} 
-                    max={pageNumbers.length}
-                    min={1}
-                    onChange={e => {
-                        let pageNumber = e.target.value ? Number(e.target.value): 1;
-                        if (pageNumber > pageNumbers.length) {
-                            pageNumber = pageNumbers.length;
-                        } else if (pageNumber < 1) {
-                            pageNumber = 1;
-                        }
-
-                        setCurrentPage(pageNumber)
-                    }}
-                    style={{width: '50px'}}
-                />
-            </span> */}
-            <select 
+            {mostrarCombo && <select 
                 value={rowsPerPage} 
                 onChange={e => {
                     setRowsPerPage(Number(e.target.value))
@@ -59,7 +39,7 @@ export const Pagination = ({rowsPerPage, totalRows, currentPage, setCurrentPage,
                         </option>
                     ))
                 }
-            </select>
+            </select>}
             <button 
                 onClick={() => setCurrentPage(1)} 
                 disabled={!canPreviousPage}

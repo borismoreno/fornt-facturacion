@@ -18,6 +18,7 @@ const initialState = {
     claveAnular: null,
     detallesComprobante: [],
     autorizacionComprobante: null,
+    facturasProcesadas: [],
 }
 
 export const comprobanteReducer = (state = initialState, action) => {
@@ -26,6 +27,11 @@ export const comprobanteReducer = (state = initialState, action) => {
             return {
                 ...state,
                 comprobantesEmitidos: action.payload
+            }
+        case types.comprobanteObtenerFacturasProcesadas:
+            return {
+                ...state,
+                facturasProcesadas: action.payload
             }
         case types.comprobanteIniciarObtenerPdf:
             return {

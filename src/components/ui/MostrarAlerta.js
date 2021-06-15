@@ -12,7 +12,7 @@ export const MostrarAlerta = () => {
         <div>
             {
                 mostrarError && (
-                    <div className={`border border-t-4 ${(tipoMensaje !== 'error') ? 'bg-green-100 border-green-500 text-green-900 shadow-md': 'bg-red-100 border-red-400 text-red-700'} px-4 py-3 rounded-b fixed z-10 top-3 right-3 w-96`} role="alert">
+                    <div className={`border border-t-4 ${(tipoMensaje !== 'error') ? 'bg-green-100 border-green-500 text-green-900 shadow-md': 'bg-red-100 border-red-400 text-red-700'} px-4 py-3 rounded-b fixed z-50 top-3 right-3 w-96`} role="alert">
                         <span className="block sm:inline">{ mensajeError }</span>
                         <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
                             <i 

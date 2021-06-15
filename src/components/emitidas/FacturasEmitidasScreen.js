@@ -177,13 +177,7 @@ export const FacturasEmitidasScreen = ({history}) => {
                     <div>
                         <TablaFacturas 
                             data={currentRows}
-                            acciones={true}
                         />
-                {/* <Tabla
-                    data={currentRows}
-                    headers={headersEmitidos}
-                    acciones={true}
-                /> */}
                 {
                     emitidos.length > 10 && <Pagination
                         rowsPerPage={rowsPerPage}
@@ -212,7 +206,7 @@ export const FacturasEmitidasScreen = ({history}) => {
                 claveAnular && <ReprocesarComprobante claveAcceso={claveAnular} handleAccion={handleAnular} handleCerrar={handleCerrarAnular} accion='Anular' />
             }
             {
-                claveAcceso && <ImprimirComprobante claveAcceso={claveAcceso} history={history} />
+                claveAcceso && <ImprimirComprobante claveAcceso={claveAcceso} history={history} tipoComprobante='factura'/>
             }
             {
                 cargando && <Cargando />

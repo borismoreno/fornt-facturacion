@@ -436,7 +436,7 @@ export const FacturaScreen = ({history}) => {
                 mostrarCargando && <Cargando />
             }
             {
-                claveAcceso && <ImprimirComprobante claveAcceso={claveAcceso} history={history} />
+                claveAcceso && <ImprimirComprobante claveAcceso={claveAcceso} history={history} tipoComprobante='factura'/>
             }
         </div>
     )

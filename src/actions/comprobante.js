@@ -15,6 +15,16 @@ export const startObtenerComprobantesEmitidos = (fechaInicio, fechaFin) => {
     }
 }
 
+export const startObtenerFacturasProcesadas = () => {
+    return async(dispatch) => {
+        const respuesta = await fetchConToken('comprobante/facturas-emitidas');
+        const body = await respuesta.json();
+        if ( body.ok ) {
+            dispatch(obtenerFacturasProcesadas(body.facturas));
+        }
+    }
+}
+
 export const startObtenerDetallesFactura = (facturaId) => {
     return async(dispatch) => {
         const respuesta = await fetchConToken(`comprobante/obtener-detalles/${facturaId}`);
@@ -227,6 +237,11 @@ const obtenerComprobantesEmitidos = (comprobantes) => ({
     type: types.comprobanteObtenerEmitidos,
     payload: comprobantes
 });
+
+const obtenerFacturasProcesadas = (facturas) => ({
+    type: types.comprobanteObtenerFacturasProcesadas,
+    payload: facturas
+})
 
 const obtenerDetallesComprobante = (detalles) => ({
     type: types.comprobanteObtenerDetalles,

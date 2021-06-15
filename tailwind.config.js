@@ -9,7 +9,9 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      width: ['hover', 'focus'],
+    },
     opacity: ({ after }) => after(['disabled'])
   },
   plugins: [],

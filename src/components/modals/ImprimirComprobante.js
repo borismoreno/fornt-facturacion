@@ -3,19 +3,45 @@ import { useDispatch } from 'react-redux'
 import { startLimpiarSeleccion } from '../../actions/clientes';
 import { startObtenerPdf } from '../../actions/comprobante';
 import { startLimpiarDatosFactura } from '../../actions/factura';
+import { startLimpiarDatosNotaCredito, startObtenerPdfNotaCredito } from '../../actions/notaCredito';
 
-export const ImprimirComprobante = ({claveAcceso, history}) => {
+export const ImprimirComprobante = ({claveAcceso, history, tipoComprobante}) => {
     const dispatch = useDispatch();
     const handleCerrar = () => {
+        switch (tipoComprobante) {
+            case 'factura':
+                limpiarFactura();
+                break;
+            case 'notaCredito':
+                limpiarNotaCredito();
+                break;
+            default:
+                break;
+        }
+    }
+    const handleImprimirPDF = () => {
+        switch (tipoComprobante) {
+            case 'factura':
+                dispatch(startObtenerPdf(claveAcceso));
+                limpiarFactura();
+                break;
+            case 'notaCredito':
+                dispatch(startObtenerPdfNotaCredito(claveAcceso));
+                limpiarNotaCredito();
+                break;
+            default:
+                break;
+        }
+    }
+
+    const limpiarFactura = () => {
         dispatch(startLimpiarDatosFactura());
         dispatch(startLimpiarSeleccion());
         history.push('/emitidas');
     }
-    const handleImprimirPDF = () => {
-        dispatch(startObtenerPdf(claveAcceso));
-        dispatch(startLimpiarDatosFactura());
-        dispatch(startLimpiarSeleccion());
-        history.push('/emitidas');
+    const limpiarNotaCredito = () => {
+        dispatch(startLimpiarDatosNotaCredito());
+        history.push('/notasCredito');
     }
     return (
         <>

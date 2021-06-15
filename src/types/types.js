@@ -40,6 +40,7 @@ export const types = {
     facturaObtenerPagos: '[factura] Obtener pagos',
 
     comprobanteObtenerEmitidos: '[comprobante] Obtener comprobantes emitidos',
+    comprobanteObtenerFacturasProcesadas: '[comprobante] Obtener facturas procesadas',
     comprobanteObtenerDetalles: '[comprobante] Obtener detalles comprobante',
     comprobanteIniciarObtenerPdf: '[comprobante] Iniciar Obtener PDF',
     comprobanteTerminarObtenerPdf: '[comprobante] Terminar Obtener PDF',
@@ -55,6 +56,13 @@ export const types = {
     comprobantePresentarAnular: '[comprobante] Presentar anular',
     comprobanteOcultarAnular: '[comprobante] Ocultar anular',
     comprobanteActualizarComprobantes: '[comprobante] Actualizar comprobantes',
+
+    notaCreditoAgregarDetalle: '[notaCredito] Agregar detalle',
+    notaCreditoEliminarDetalle: '[notaCredito] Eliminar detalle',
+    notaCreditoLimpiar: '[notaCredito] Limpiar',
+    notaCreditoAgregarValores: '[notaCredito] Agregar valores',
+    notaCreditoObtenerEmitidas: '[notaCredito] Obtener emitidas',
+    notaCreditoObtenerClaveAcceso: '[notaCredito] Obtener clave acceso',
 
     uiMostrarCargando: '[ui] Mostrar Cargando',
     uiOcultarCargando: '[ui] Ocultar Cargando'
