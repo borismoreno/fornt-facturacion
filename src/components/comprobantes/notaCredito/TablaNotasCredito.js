@@ -1,5 +1,6 @@
 import React from 'react';
-// import { NavLink } from 'react-router-dom';
+import MenuAcciones from './MenuAcciones';
+import { NavLink } from 'react-router-dom';
 
 const initialData = [];
 
@@ -25,35 +26,40 @@ const TablaNotasCredito = ({data = initialData}) => {
                             <th
                                 className="px-6 bg-blue-200 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                             >Estado</th>
-                            {/* <th
+                            <th
                                 className="px-6 bg-blue-200 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                            ></th> */}
+                            ></th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            data.map(item => {
-                                return <tr
-                                            key={item.facturaId}
-                                            className="border-b-2 hover:bg-blue-50"
-                                        >
-                                            {/* <td 
-                                                className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-blue-400 hover:underline"
-                                            >
-                                                <NavLink to={`/emitidas/factura/${item.facturaId}`}>{item.nombre}</NavLink>
-                                            </td> */}
-                                            <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.nombre}</td>
-                                            <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.numero}</td>
-                                            <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.fecha}</td>
-                                            <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.valor}</td>
-                                            <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.estado}</td>
-                                            {/* <MenuAcciones
-                                                claveAcceso={item.claveAcceso}
-                                                estado={item.estado}
-                                                facturaId={item.facturaId}
-                                            /> */}
-                                        </tr>
-                            })
+                            data.map(item => (
+                                <tr
+                                    key={item.facturaId}
+                                    className="border-b-2 hover:bg-blue-50"
+                                >
+                                    <td 
+                                        className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-blue-400 hover:underline"
+                                    >
+                                        <NavLink to={`/notasCredito/notaCredito/${item.facturaId}`}>{item.nombre}</NavLink>
+                                    </td>
+                                    {/* <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.nombre}</td> */}
+                                    <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.numero}</td>
+                                    <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.fecha}</td>
+                                    <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.valor}</td>
+                                    <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.estado}</td>
+                                    <td>
+                                        <MenuAcciones
+                                            claveAcceso={item.claveAcceso}
+                                        />
+                                    </td>
+                                    {/* <MenuAcciones
+                                        claveAcceso={item.claveAcceso}
+                                        estado={item.estado}
+                                        facturaId={item.facturaId}
+                                    /> */}
+                                </tr>
+                            ))
                         }
                     </tbody>
                 </table>

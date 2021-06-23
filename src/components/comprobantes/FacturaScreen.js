@@ -20,7 +20,8 @@ import { useForm } from '../../hooks/useForm';
 const clienteInicial = {
     razonSocial: '',
     direccion: '',
-    mail: ''
+    mail: '',
+    telefono: ''
 }
 
 const headersDetalle = [
@@ -61,7 +62,7 @@ export const FacturaScreen = ({history}) => {
     const { empresa, formasPago } = useSelector(state => state.configuracion);
     const { detallesFactura, adicionalesFactura, valoresFactura, claveAcceso } = useSelector(state => state.factura);
     const { mostrarCargando } = useSelector(state => state.alerta);
-    const { razonSocial, direccion, mail } = formValues;
+    const { razonSocial, direccion, mail, telefono } = formValues;
     const { 
         subtotalDoce, 
         subtotalCero, 
@@ -113,7 +114,8 @@ export const FacturaScreen = ({history}) => {
             setFormValues({
                 razonSocial: clienteSeleccionado.razonSocial,
                 direccion: clienteSeleccionado.direccion,
-                mail: clienteSeleccionado.mail
+                mail: clienteSeleccionado.mail,
+                telefono: clienteSeleccionado.telefono
             })
             setNumeroIdentificacion(clienteSeleccionado.numeroIdentificacion);
             setDisplay(false);
@@ -202,6 +204,7 @@ export const FacturaScreen = ({history}) => {
         clienteEnviar.direccion = direccion;
         clienteEnviar.razonSocial = razonSocial;
         clienteEnviar.mail = mail;
+        clienteEnviar.telefono = telefono;
         dispatch(startMostrarCargandoAlerta());
         dispatch(startEmitirFactura({
             cliente: clienteEnviar,
@@ -316,6 +319,20 @@ export const FacturaScreen = ({history}) => {
                             autoComplete="off"
                             name="mail"
                             value={mail}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className="mb-10">
+                        <label
+                            htmlFor="telefono"
+                            className="text-xs font-bold"
+                        >Teléfono</label>
+                        <input
+                            id="telefono"
+                            className="w-full border-b-2 pb-1 border-gray-200 focus:outline-none focus:border-indigo-300 mt-2 text-sm"
+                            autoComplete="off"
+                            name="telefono"
+                            value={telefono}
                             onChange={handleInputChange}
                         />
                     </div>

@@ -10,6 +10,7 @@ import { FacturaDetalleScreen } from '../components/comprobantes/FacturaDetalleS
 import { RetencionesEmitidasScreen } from '../components/comprobantes/retenciones/RetencionesEmitidasScreen';
 import NotaCreditoEmitidasScreen from '../components/comprobantes/notaCredito/NotaCreditoEmitidasScreen';
 import NotaCreditoScreen from '../components/comprobantes/notaCredito/NotaCreditoScreen';
+import NotaCreditoDetalleScreen from '../components/comprobantes/notaCredito/NotaCreditoDetalleScreen';
 // import { SidebarV2 } from '../components/ui/SidebarV2';
 
 export const RouterPrincipal = () => {
@@ -28,6 +29,7 @@ export const RouterPrincipal = () => {
                         <Route exact path='/notasCredito' component={ NotaCreditoEmitidasScreen } />
                         <Route exact path='/notasCredito/nuevo/:id' component={ NotaCreditoScreen } />
                         <Route path='/emitidas/factura/:id' component={ FacturaDetalleScreen }/>
+                        <Route exact path='/notasCredito/notaCredito/:id' component={ NotaCreditoDetalleScreen }/>
                         <Redirect to='/dashboard' />
                     </Switch>
                 </div>
