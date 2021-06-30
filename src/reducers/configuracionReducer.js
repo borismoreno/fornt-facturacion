@@ -6,6 +6,8 @@ const initialState = {
     tarifasIva: null,
     empresa: null,
     formasPago: null,
+    tiposDocumento: null,
+    impuestosRetencion: null,
 }
 
 export const configuracionReducer = (state = initialState, action) => {
@@ -34,6 +36,16 @@ export const configuracionReducer = (state = initialState, action) => {
             return {
                 ...state,
                 formasPago: action.payload
+            }
+        case types.configuracionTiposDocumento:
+            return {
+                ...state,
+                tiposDocumento: action.payload
+            }
+        case types.configuracionImpuestosRetencion:
+            return {
+                ...state,
+                impuestosRetencion: action.payload
             }
         default:
             return state;

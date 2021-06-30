@@ -3,10 +3,14 @@ import DatePicker from 'react-datepicker';
 import es from 'date-fns/locale/es';
 import "react-datepicker/dist/react-datepicker.css";
 
-export const SeleccionFecha = ({startDate, setStartDate}) => {
+export const SeleccionFecha = ({startDate, setStartDate, minimoUnMes = true}) => {
     var today = new Date();
     var minimo = new Date();
-    minimo.setDate(today.getDate() - 30);
+    if (minimoUnMes) {
+        minimo.setDate(today.getDate() - 30);
+    } else {
+        minimo.setDate(today.getDate() - 300);
+    }
     return (
         <DatePicker
             selected={startDate}

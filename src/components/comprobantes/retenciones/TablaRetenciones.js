@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 const initialData = [];
 
-const TablaNotasCredito = ({data = initialData}) => {
+const TablaRetenciones = ({data = initialData}) => {
     return ( 
         <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="block w-full overflow-x-auto">
@@ -20,9 +20,9 @@ const TablaNotasCredito = ({data = initialData}) => {
                             <th
                                 className="px-6 bg-blue-200 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                             >Fecha Emisión</th>
-                            <th
+                            {/* <th
                                 className="px-6 bg-blue-200 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                            >Valor</th>
+                            >Valor</th> */}
                             <th
                                 className="px-6 bg-blue-200 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                             >Estado</th>
@@ -45,7 +45,7 @@ const TablaNotasCredito = ({data = initialData}) => {
                                     </td>
                                     <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.numero}</td>
                                     <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.fecha}</td>
-                                    <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.valor}</td>
+                                    {/* <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.valor}</td> */}
                                     <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.estado}</td>
                                     <td>
                                         <MenuAcciones
@@ -62,4 +62,4 @@ const TablaNotasCredito = ({data = initialData}) => {
      );
 }
  
-export default TablaNotasCredito;
+export default TablaRetenciones;

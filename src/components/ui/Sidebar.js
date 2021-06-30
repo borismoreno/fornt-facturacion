@@ -107,9 +107,9 @@ const Sidebar = () => {
                                     Facturas
                                 </NavLink>
                             </li>
-                            {/* <li className="items-center">
+                            <li className="items-center">
                                 <NavLink
-                                    className={"flex text-lg uppercase py-3 px-3 rounded-md font-bold text-gray-800 hover:text-gray-600" +
+                                    className={"text-xs uppercase py-3 px-3 rounded-md font-bold block text-gray-800 hover:text-gray-600" +
                                     (window.location.href.indexOf("/retenciones") !== -1
                                         ? "opacity-75 bg-blue-300"
                                         : "text-gray-400")
@@ -117,11 +117,11 @@ const Sidebar = () => {
                                     to="/retenciones"
                                 >
                                 <i
-                                    className="fas fa-file-invoice-dollar mr-2"
-                                ></i>
-                                    <p className='text-sm'>Retenciones</p>
+                                    className="fas fa-file-invoice-dollar mr-2 text-sm"
+                                ></i>{" "}
+                                    Retenciones
                                 </NavLink>
-                            </li> */}
+                            </li>
                             <li className="items-center">
                                 <NavLink
                                     className={"text-xs uppercase py-3 px-3 rounded-md font-bold block text-gray-800 hover:text-gray-600" +

@@ -29,6 +29,15 @@ export const obtenerMes = (mes) => {
     }
 }
 
+export const obtenerMesNumero = (mes) => {
+    const pad = '00';
+    let mesNumero = (mes + 1).toString();
+    if (mesNumero.length === 1) {
+        mesNumero = pad.substring(0, pad.length - mesNumero.length) + mesNumero;
+    }
+    return mesNumero;
+}
+
 export const obtenerEtiquetas = () => {
     let labels = [];
     for (let i = 1; i <= 12; i++) {

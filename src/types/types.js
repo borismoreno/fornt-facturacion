@@ -27,6 +27,8 @@ export const types = {
     configuracionTiposProducto: '[configuracion] Obtener tipos de producto',
     configuracionTarifasIva: '[configuracion] Obtener tarifas de IVA',
     configuracionFormasPago: '[configuracion] Obtener Formas de Pago',
+    configuracionTiposDocumento: '[configuracion] Obtener Tipos Documento',
+    configuracionImpuestosRetencion: '[configuracion] Obtener Impuestos Retencion',
 
     facturaAgregarDetalle: '[factura] Agregar detalle',
     facturaLimpiarFactura: '[factura] Limpiar datos factura',
@@ -38,6 +40,12 @@ export const types = {
     facturaActualizarFormasPago: '[factura] Actualizar Formas Pago',
     facturaObtenerClaveAcceso: '[factura] Obtener clave acceso',
     facturaObtenerPagos: '[factura] Obtener pagos',
+
+    retencionAgregarDetalle: '[retencion] Agregar detalle',
+    retencionEliminarDetalle: '[retencion] Eliminar detalle',
+    retencionObtenerEmitidas: '[retenciones] Obtener emitidas',
+    retencionLimpiar: '[retencion] Limpiar',
+    retencionObtenerClaveAcceso: '[retencion] Obtener clave acceso',
 
     comprobanteObtenerEmitidos: '[comprobante] Obtener comprobantes emitidos',
     comprobanteObtenerFacturasProcesadas: '[comprobante] Obtener facturas procesadas',

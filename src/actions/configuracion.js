@@ -74,4 +74,34 @@ export const startObtenerFormasPago = () => {
 const obtenerFormasPago = (tiposFormaPago) => ({
     type: types.configuracionFormasPago,
     payload: tiposFormaPago
-})
+});
+
+export const startObtenerTiposDocumento = () => {
+    return async(dispatch) => {
+        const respuesta = await fetchConToken('configuracion/tiposDocumento');
+        const body = await respuesta.json();
+        if ( body.ok ) {
+            dispatch(obtenerTiposDocumento(body.tiposDocumento));
+        }
+    }
+}
+
+const obtenerTiposDocumento = (tiposDocumento) => ({
+    type: types.configuracionTiposDocumento,
+    payload: tiposDocumento
+});
+
+export const startObtenerImpuestosRetencion = () => {
+    return async(dispatch) => {
+        const respuesta = await fetchConToken('configuracion/impuestosRetencion');
+        const body = await respuesta.json();
+        if ( body.ok ) {
+            dispatch(obtenerImpuestosRetencion(body.impuestosRetencion));
+        }
+    }
+}
+
+const obtenerImpuestosRetencion = (impuestosRetencion) => ({
+    type: types.configuracionImpuestosRetencion,
+    payload: impuestosRetencion
+});

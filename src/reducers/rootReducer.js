@@ -7,6 +7,7 @@ import { configuracionReducer } from './configuracionReducer';
 import { dashboardReducer } from './dashboardReducer';
 import { facturaReducer } from './facturaReducer';
 import { notaCreditoReducer } from './notaCreditoReducer';
+import { retencionReducer } from './retencionReducer';
 import { uiReducer } from './uiReducer';
 
 export const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ export const rootReducer = combineReducers({
     configuracion: configuracionReducer,
     factura: facturaReducer,
     notaCredito: notaCreditoReducer,
+    retencion: retencionReducer,
     comprobante: comprobanteReducer,
     ui: uiReducer,
 })

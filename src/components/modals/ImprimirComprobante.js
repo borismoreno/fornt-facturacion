@@ -4,6 +4,7 @@ import { startLimpiarSeleccion } from '../../actions/clientes';
 import { startObtenerPdf } from '../../actions/comprobante';
 import { startLimpiarDatosFactura } from '../../actions/factura';
 import { startLimpiarDatosNotaCredito, startObtenerPdfNotaCredito } from '../../actions/notaCredito';
+import { startLimpiarDatosRetencion, startObtenerPdfRetencion } from '../../actions/retencion';
 
 export const ImprimirComprobante = ({claveAcceso, history, tipoComprobante}) => {
     const dispatch = useDispatch();
@@ -14,6 +15,9 @@ export const ImprimirComprobante = ({claveAcceso, history, tipoComprobante}) => 
                 break;
             case 'notaCredito':
                 limpiarNotaCredito();
+                break;
+            case 'retencion':
+                limpiarRetencion();
                 break;
             default:
                 break;
@@ -29,6 +33,10 @@ export const ImprimirComprobante = ({claveAcceso, history, tipoComprobante}) => 
                 dispatch(startObtenerPdfNotaCredito(claveAcceso));
                 limpiarNotaCredito();
                 break;
+            case 'retencion':
+                dispatch(startObtenerPdfRetencion(claveAcceso));
+                limpiarRetencion();
+                break;
             default:
                 break;
         }
@@ -42,6 +50,11 @@ export const ImprimirComprobante = ({claveAcceso, history, tipoComprobante}) => 
     const limpiarNotaCredito = () => {
         dispatch(startLimpiarDatosNotaCredito());
         history.push('/notasCredito');
+    }
+    const limpiarRetencion = () => {
+        dispatch(startLimpiarDatosRetencion());
+        dispatch(startLimpiarSeleccion());
+        history.push('/retenciones');
     }
     return (
         <>

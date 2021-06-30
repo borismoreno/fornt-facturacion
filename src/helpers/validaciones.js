@@ -54,3 +54,12 @@ export const validarEmail = (email) => {
     });
     return valido;
 }
+
+export const validarNumeroDocumento = (numero) => {
+    const re = /^\d{3}-\d{3}-\d{9}$/;
+    let valido = true;
+    if ( !re.test(numero) ) {
+        valido = false;
+    }
+    return valido;
+}
