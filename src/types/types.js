@@ -46,6 +46,7 @@ export const types = {
     retencionObtenerEmitidas: '[retenciones] Obtener emitidas',
     retencionLimpiar: '[retencion] Limpiar',
     retencionObtenerClaveAcceso: '[retencion] Obtener clave acceso',
+    retencionObtenerDetalles: '[retencion] Obtener detalles',
 
     comprobanteObtenerEmitidos: '[comprobante] Obtener comprobantes emitidos',
     comprobanteObtenerFacturasProcesadas: '[comprobante] Obtener facturas procesadas',

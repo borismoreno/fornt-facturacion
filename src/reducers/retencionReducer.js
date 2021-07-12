@@ -4,6 +4,7 @@ const initialState = {
     detallesRetencion: [],
     retencionesEmitidas: [],
     claveAcceso: null,
+    detallesEmitida: [],
 }
 
 export const retencionReducer = (state = initialState, action) => {
@@ -29,6 +30,11 @@ export const retencionReducer = (state = initialState, action) => {
             return {
                 ...state,
                 claveAcceso: action.payload
+            }
+        case types.retencionObtenerDetalles:
+            return {
+                ...state,
+                detallesEmitida: action.payload
             }
         case types.retencionLimpiar:
             return initialState;

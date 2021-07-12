@@ -312,7 +312,7 @@ export const FacturaDetalleScreen = () => {
                     (descargandoPdf || mostrarCargando) && <Cargando />
                 }
                 {
-                    claveReenvio && <ReenvioMail claveAcceso={claveReenvio} />
+                    claveReenvio && <ReenvioMail claveAcceso={claveReenvio} tipoDocumento='comprobante' />
                 }
                 {
                     mostrarPago && 

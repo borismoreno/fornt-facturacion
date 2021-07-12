@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { startObtenerRetencionesEmitidas } from '../../../actions/retencion';
 import { obtenerValorEstado } from '../../../helpers/comunes';
+import { ReenvioMail } from '../../modals/ReenvioMail';
+import { Cargando } from '../../ui/Cargando';
 import { ExportarExcel } from '../../ui/ExportarExcel';
 import { MenuFechas } from '../../ui/MenuFechas';
 import { Pagination } from '../../ui/Pagination';
@@ -12,8 +14,9 @@ import TablaRetenciones from './TablaRetenciones';
 export const RetencionesEmitidasScreen = () => {
     const [ datosExcel, setDatosExcel ] = useState([]);
     const [ emitidos, setEmitidos ] = useState([]);
-    const { fechaInicio, fechaFin } = useSelector(state => state.comprobante);
+    const { fechaInicio, fechaFin, descargandoPdf, claveReenvio } = useSelector(state => state.comprobante);
     const { retencionesEmitidas } = useSelector(state => state.retencion);
+    const { mostrarCargando } = useSelector(state => state.alerta);
     const [ currentPage, setCurrentPage ] = useState(1);
     const [ rowsPerPage, setRowsPerPage ] = useState(10);
     const dispatch = useDispatch();
@@ -128,6 +131,12 @@ export const RetencionesEmitidasScreen = () => {
                 <div className="flex justify-center rounded-md border border-blue-400 p-4">
                     <ComprobanteVacio />
                 </div>
+            }
+            {
+                (descargandoPdf || mostrarCargando) && <Cargando />
+            }
+            {
+                claveReenvio && <ReenvioMail claveAcceso={claveReenvio} tipoDocumento='retencion'/>
             }
         </div>
     )

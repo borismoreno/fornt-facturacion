@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { startObtenerPdf, startObtenerXml } from '../../actions/comprobante';
+import { startObtenerXml } from '../../actions/comprobante';
+import { startObtenerPdfNotaCredito } from '../../actions/notaCredito';
 
 export const MenuDescargar = ({claveAcceso, tieneXml = false}) => {
     const [open, setOpen] = useState(false);
@@ -13,7 +14,7 @@ export const MenuDescargar = ({claveAcceso, tieneXml = false}) => {
     const handleDescargarPdf = () => {
         // console.log(claveAcceso);
         if (claveAcceso) {
-            dispatch(startObtenerPdf(claveAcceso));
+            dispatch(startObtenerPdfNotaCredito(claveAcceso));
         }
     }
 

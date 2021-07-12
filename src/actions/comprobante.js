@@ -116,11 +116,11 @@ export const terminarReenviarMail = () => {
     }
 }
 
-export const startReenvio = (datos) => {
+export const startReenvio = (datos, tipoComprobante) => {
     return async(dispatch) => {
         try {
             dispatch(startMostrarCargandoAlerta());
-            const respuesta = await fetchConToken('comprobante/reenvio-mail', datos, 'POST');
+            const respuesta = await fetchConToken(`${tipoComprobante}/reenvio-mail`, datos, 'POST');
             const body = await respuesta.json();
             if (body.ok) {
                 dispatch(startMostrarError('Mail enviado correctamente.', 'correcto'));
@@ -130,6 +130,8 @@ export const startReenvio = (datos) => {
             dispatch(limpiarReenvioMail());
             dispatch(startOcultarCargandoAlerta());
         } catch (error) {
+            dispatch(startMostrarError('Hubo un error al enviar el mail.'));
+            dispatch(startOcultarCargandoAlerta());
             console.log(error);
         }
     }

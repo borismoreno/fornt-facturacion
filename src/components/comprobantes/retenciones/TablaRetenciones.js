@@ -41,7 +41,7 @@ const TablaRetenciones = ({data = initialData}) => {
                                     <td 
                                         className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-blue-400 hover:underline"
                                     >
-                                        <NavLink to={`/notasCredito/notaCredito/${item.facturaId}`}>{item.nombre}</NavLink>
+                                        <NavLink to={`/retenciones/retencion/${item.facturaId}`}>{item.nombre}</NavLink>
                                     </td>
                                     <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.numero}</td>
                                     <td className="border-t-0 px-6 max-w-sm align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500">{item.fecha}</td>

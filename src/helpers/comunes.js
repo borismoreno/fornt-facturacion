@@ -1,3 +1,5 @@
+import { obtenerMes } from "./meses";
+
 export const obtenerValorEstado = (valor) => {
     let estado = '';
     switch (valor) {
@@ -26,4 +28,21 @@ export const obtenerValorEstado = (valor) => {
             break;
     }
     return estado;
+}
+
+export const obtenerFecha = (fecha) => {
+    const division = fecha.split('/');
+    
+    return `${obtenerMes(division[1])} ${division[0]}, ${division[2]}`;
+}
+
+export const cambiarFecha = (fecha, incluirHora = false) => {
+    const auxiliar = fecha.split('T');
+    const division = auxiliar[0].split('-');
+    const hora = auxiliar[1].split(':');
+    if (incluirHora) {
+        return `${obtenerMes(division[1])} ${division[2]}, ${division[0]}, ${hora[0]}:${hora[1]}`
+    } else {
+        return `${obtenerMes(division[1])} ${division[2]}, ${division[0]}`
+    }
 }

@@ -5,9 +5,9 @@ import { validarEmail } from '../../helpers/validaciones';
 import { useDispatch, useSelector } from 'react-redux';
 import { startReenvio, terminarReenviarMail } from '../../actions/comprobante';
 
-export const ReenvioMail = ({claveAcceso}) => {
+export const ReenvioMail = ({claveAcceso, tipoDocumento}) => {
     const dispatch = useDispatch();
-    const { mostrarCargando } = useSelector(state => state.alerta);
+    const { mostrarCargando, mostrarError } = useSelector(state => state.alerta);
     const handleCerrar = () => {
         dispatch(terminarReenviarMail());
     }
@@ -29,7 +29,7 @@ export const ReenvioMail = ({claveAcceso}) => {
             dispatch(startReenvio({
                 claveAcceso,
                 mailReenvio: datos.mail
-            }))
+            }, tipoDocumento))
         //   tiposIdentificacion.forEach(tipo => {
         //     if (tipo.codigo === datos.tipoIdentificacion) {
         //       datos.tipoIdentificacion = tipo._id
@@ -42,7 +42,7 @@ export const ReenvioMail = ({claveAcceso}) => {
     return (
         <>
             <div 
-                className={`justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 ${mostrarCargando? 'z-40': 'z-50'} outline-none focus:outline-none`}
+                className={`justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 ${(mostrarCargando || mostrarError)? 'z-40': 'z-50'} outline-none focus:outline-none`}
             >
                 <div className="relative w-10/12 md:w-8/12 lg:w-5/12 my-6 pb-2 mx-auto max-w-3xl">
                     {/*content*/}

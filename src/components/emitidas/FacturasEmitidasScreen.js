@@ -197,7 +197,7 @@ export const FacturasEmitidasScreen = ({history}) => {
                 errorDevuelta && <ErroresComprobante />
             } */}
             {
-                claveReenvio && <ReenvioMail claveAcceso={claveReenvio} />
+                claveReenvio && <ReenvioMail claveAcceso={claveReenvio} tipoDocumento='comprobante'/>
             }
             {
                 claveReprocesar && <ReprocesarComprobante claveAcceso={claveReprocesar} handleAccion={handleReprocesar} handleCerrar={handleCerrarReprocesar} accion='Reprocesar' />

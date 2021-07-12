@@ -11,6 +11,7 @@ import { RetencionesEmitidasScreen } from '../components/comprobantes/retencione
 import NotaCreditoEmitidasScreen from '../components/comprobantes/notaCredito/NotaCreditoEmitidasScreen';
 import NotaCreditoScreen from '../components/comprobantes/notaCredito/NotaCreditoScreen';
 import NotaCreditoDetalleScreen from '../components/comprobantes/notaCredito/NotaCreditoDetalleScreen';
+import RetencionDetalleScreen from '../components/comprobantes/retenciones/RetencionDetalleScreen';
 // import { SidebarV2 } from '../components/ui/SidebarV2';
 
 export const RouterPrincipal = () => {
@@ -26,6 +27,7 @@ export const RouterPrincipal = () => {
                         <Route exact path='/emitidas' component={ FacturasEmitidasScreen } />
                         <Route exact path='/retenciones' component={ RetencionesEmitidasScreen } />
                         <Route exact path='/retenciones/nuevo' component={ RetencionScreen } />
+                        <Route exact path='/retenciones/retencion/:id' component={ RetencionDetalleScreen }/>
                         <Route exact path='/notasCredito' component={ NotaCreditoEmitidasScreen } />
                         <Route exact path='/notasCredito/nuevo/:id' component={ NotaCreditoScreen } />
                         <Route path='/emitidas/factura/:id' component={ FacturaDetalleScreen }/>

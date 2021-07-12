@@ -74,6 +74,17 @@ export const startObtenerPdfRetencion = (claveAcceso) => {
     }
 }
 
+export const startObtenerDetallesRetencion = (retencionId) => {
+    return async(dispatch) => {
+        const respuesta = await fetchConToken(`retencion/obtener-detalles/${retencionId}`);
+        const body = await respuesta.json();
+        const { ok, detalles } = body;
+        if (ok) {
+            dispatch(obtenerDetallesRetencion(detalles));
+        }
+    }
+}
+
 const obtenerRetencionesEmitidas = (retenciones) => ({
     type: types.retencionObtenerEmitidas,
     payload: retenciones
@@ -82,6 +93,11 @@ const obtenerRetencionesEmitidas = (retenciones) => ({
 const obtenerClaveAcceso = (claveAcceso) => ({
     type: types.retencionObtenerClaveAcceso,
     payload: claveAcceso
+});
+
+const obtenerDetallesRetencion = (detalles) => ({
+    type: types.retencionObtenerDetalles,
+    payload: detalles
 });
 
 const limpiarDatosRetencion = () => ({ type: types.retencionLimpiar });
