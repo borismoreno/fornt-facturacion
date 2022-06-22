@@ -12,6 +12,7 @@ import NotaCreditoEmitidasScreen from '../components/comprobantes/notaCredito/No
 import NotaCreditoScreen from '../components/comprobantes/notaCredito/NotaCreditoScreen';
 import NotaCreditoDetalleScreen from '../components/comprobantes/notaCredito/NotaCreditoDetalleScreen';
 import RetencionDetalleScreen from '../components/comprobantes/retenciones/RetencionDetalleScreen';
+import SignalScreen from '../components/signalr/SignalScreen';
 // import { SidebarV2 } from '../components/ui/SidebarV2';
 
 export const RouterPrincipal = () => {
@@ -22,16 +23,17 @@ export const RouterPrincipal = () => {
                 <Navbar />
                 <div className="px-4 md:px-10 mx-auto w-full mt-4 pb-2">
                     <Switch>
-                        <Route exact path='/dashboard' component={ DashboardScreen } />
-                        <Route exact path='/emitidas/factura' component={ FacturaScreen } />
-                        <Route exact path='/emitidas' component={ FacturasEmitidasScreen } />
-                        <Route exact path='/retenciones' component={ RetencionesEmitidasScreen } />
-                        <Route exact path='/retenciones/nuevo' component={ RetencionScreen } />
-                        <Route exact path='/retenciones/retencion/:id' component={ RetencionDetalleScreen }/>
-                        <Route exact path='/notasCredito' component={ NotaCreditoEmitidasScreen } />
-                        <Route exact path='/notasCredito/nuevo/:id' component={ NotaCreditoScreen } />
-                        <Route path='/emitidas/factura/:id' component={ FacturaDetalleScreen }/>
-                        <Route exact path='/notasCredito/notaCredito/:id' component={ NotaCreditoDetalleScreen }/>
+                        <Route exact path='/dashboard' component={DashboardScreen} />
+                        <Route exact path='/emitidas/factura' component={FacturaScreen} />
+                        <Route exact path='/emitidas' component={FacturasEmitidasScreen} />
+                        <Route exact path='/signalr' component={SignalScreen} />
+                        <Route exact path='/retenciones' component={RetencionesEmitidasScreen} />
+                        <Route exact path='/retenciones/nuevo' component={RetencionScreen} />
+                        <Route exact path='/retenciones/retencion/:id' component={RetencionDetalleScreen} />
+                        <Route exact path='/notasCredito' component={NotaCreditoEmitidasScreen} />
+                        <Route exact path='/notasCredito/nuevo/:id' component={NotaCreditoScreen} />
+                        <Route path='/emitidas/factura/:id' component={FacturaDetalleScreen} />
+                        <Route exact path='/notasCredito/notaCredito/:id' component={NotaCreditoDetalleScreen} />
                         <Redirect to='/dashboard' />
                     </Switch>
                 </div>
