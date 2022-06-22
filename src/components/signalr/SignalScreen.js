@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 
-const signalUrl = process.env.SIGNALR_URL;
+const signalUrl = "https://signalr-bmmg.azurewebsites.net/hubs/view	";
 
 const SignalScreen = () => {
     const [number, setNumber] = useState(0);
     const connection = new HubConnectionBuilder()
-        .withUrl(signalUrl)
+        .withUrl("https://signalr-bmmg.azurewebsites.net/hubs/view")
         .build();
 
     connection.on("viewCountUpdate", value => {
