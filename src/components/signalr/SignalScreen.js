@@ -27,6 +27,7 @@ const SignalScreen = () => {
     }
 
     useEffect(() => {
+        console.log('signalr', signalUrl);
         connection.start().then(startSuccess, startFail);
     }, [])
     return (
