@@ -168,7 +168,7 @@ export const FacturaScreen = ({ history }) => {
         const fechaEnvio = yyyy + '-' + mm + '-' + dd;
         let impuestosDetalle = [];
         if (subtotalDoce > 0) {
-            impuestosDetalle.push(calcularImpuestosDetalle(subtotalDoce, totalIva, '2', '0.00'));
+            impuestosDetalle.push(calcularImpuestosDetalle(subtotalDoce, totalIva, '4', '0.00'));
         }
         if (subtotalCero > 0) {
             impuestosDetalle.push(calcularImpuestosDetalle(subtotalCero, '0.00', '0', '0.00'));
